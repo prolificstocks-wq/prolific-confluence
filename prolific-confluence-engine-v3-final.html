@@ -346,7 +346,7 @@ function clearTickerFilter(){tickerFilter='';document.getElementById('ticker-fil
 function applyFilterUI(val){document.getElementById('ticker-filter-input').value=val;document.getElementById('ticker-filter-clear').classList.toggle('show',val.length>0);document.getElementById('filter-badge').classList.toggle('show',val.length>0);}
 function matchesTicker(t){return!tickerFilter||(t||'').toUpperCase()===tickerFilter;}
 function connectWS(){
-  if(wsRetries>=MAX_RETRY){setConn('demo');document.getElementById('demo-banner').classList.add('show');loadDemo();return;}
+  if(wsRetries>=MAX_RETRIES){setConn('demo');document.getElementById('demo-banner').classList.add('show');loadDemo();return;}
   try{
     const sse=new EventSource('https://prolific-relay-production-f12f.up.railway.app/stream');
     sse.onopen=()=>{wsRetries=0;setConn('live');document.getElementById('demo-banner').classList.remove('show');console.log('[SSE] Connected');};
