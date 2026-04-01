@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROLIFIC · CONFLUENCE ENGINE V4</title>
+<title>PROLIFIC · CONFLUENCE ENGINE V5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -125,6 +125,7 @@ body::before {
 .perm-active     { color:var(--green-lt); border-color:rgba(46,204,113,0.4); background:rgba(46,204,113,0.08); animation:perm-pulse 2s infinite; }
 .perm-restricted { color:var(--amber-lt); border-color:rgba(208,140,40,0.4); background:rgba(208,140,40,0.07); }
 .perm-blocked    { color:var(--red-lt); border-color:rgba(240,80,80,0.4); background:rgba(240,80,80,0.08); animation:blocked-pulse 1.4s infinite; }
+.perm-caution    { color:var(--amber-lt); border-color:rgba(208,140,40,0.4); background:rgba(208,140,40,0.07); }
 .perm-waiting    { color:var(--muted2); border-color:var(--border); }
 @keyframes perm-pulse    { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px rgba(46,204,113,0.25)} }
 @keyframes blocked-pulse { 0%,100%{box-shadow:none} 50%{box-shadow:0 0 10px rgba(240,80,80,0.3)} }
@@ -198,12 +199,27 @@ body::before {
 }
 .perm-state.blocked    { color:var(--red-lt); animation:flicker 2.5s infinite; }
 .perm-state.restricted { color:var(--amber-lt); }
+.perm-state.caution    { color:var(--amber); }
 .perm-state.qualified  { color:var(--gold-lt); }
 .perm-state.active     { color:var(--green-lt); animation:glow-green 2s infinite; }
 .perm-state.waiting    { color:var(--muted2); }
 @keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:0.35} 94%{opacity:1} 97%{opacity:0.6} 98%{opacity:1} }
 @keyframes glow-green { 0%,100%{text-shadow:none} 50%{text-shadow:0 0 20px rgba(46,204,113,0.4)} }
 .perm-subtitle { font-family:var(--mono); font-size:9px; letter-spacing:0.1em; color:var(--muted2); text-transform:uppercase; }
+
+/* score stack tag */
+.score-stack-tag {
+  display:flex; align-items:center; gap:4px;
+  font-family:var(--mono); font-size:8px; letter-spacing:0.1em; color:var(--muted2);
+}
+.stack-pt {
+  font-family:var(--mono); font-size:10px; font-weight:700; padding:1px 5px;
+  border:1px solid; letter-spacing:0.06em;
+}
+.sp-crit { color:var(--red-lt); border-color:rgba(240,80,80,0.35); background:rgba(240,80,80,0.1); }
+.sp-maj  { color:var(--amber-lt); border-color:rgba(208,140,40,0.3); background:rgba(208,140,40,0.07); }
+.sp-ctx  { color:var(--gold); border-color:var(--border2); background:rgba(201,168,76,0.06); }
+.sp-ok   { color:var(--green-lt); border-color:rgba(46,204,113,0.3); background:rgba(46,204,113,0.07); }
 
 .perm-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
 .setup-type-tag {
@@ -318,14 +334,9 @@ body::before {
   border-top:2px solid var(--border);
   transition:all 0.4s;
 }
-.phase-step.active {
-  color:var(--gold);
-  border-top-color:var(--gold);
-  background:rgba(201,168,76,0.06);
-}
+.phase-step.active { color:var(--gold); border-top-color:var(--gold); background:rgba(201,168,76,0.06); }
 .phase-step.active::after {
-  content:'';
-  position:absolute; bottom:-4px; left:50%; transform:translateX(-50%);
+  content:''; position:absolute; bottom:-4px; left:50%; transform:translateX(-50%);
   width:6px; height:6px; border-radius:50%; background:var(--gold);
 }
 .phase-step.completed { color:var(--muted2); border-top-color:var(--muted); }
@@ -344,12 +355,14 @@ body::before {
 .verdict-card.go::before      { background:linear-gradient(90deg,transparent,var(--gold),transparent); }
 .verdict-card.caution::before { background:linear-gradient(90deg,transparent,var(--amber),transparent); }
 .verdict-card.blocked::before { background:linear-gradient(90deg,transparent,var(--red-lt),transparent); }
+.verdict-card.restricted::before { background:linear-gradient(90deg,transparent,var(--amber-lt),transparent); }
 .verdict-dir { font-family:var(--mono); font-size:7px; letter-spacing:0.2em; color:var(--muted2); text-transform:uppercase; }
 .verdict-text { font-family:var(--cond); font-size:20px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.4s; }
-.verdict-text.go      { color:var(--gold-lt); }
-.verdict-text.caution { color:var(--amber-lt); }
-.verdict-text.blocked { color:var(--red-lt); animation:flicker 2.5s infinite; }
-.verdict-text.weak    { color:var(--muted2); }
+.verdict-text.go         { color:var(--gold-lt); }
+.verdict-text.caution    { color:var(--amber); }
+.verdict-text.restricted { color:var(--amber-lt); }
+.verdict-text.blocked    { color:var(--red-lt); animation:flicker 2.5s infinite; }
+.verdict-text.weak       { color:var(--muted2); }
 .verdict-detail { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:0.06em; line-height:1.5; }
 .verdict-trigger { font-family:var(--mono); font-size:8px; color:var(--text-dim); letter-spacing:0.05em; }
 .verdict-invalid { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:0.05em; }
@@ -357,21 +370,59 @@ body::before {
 /* ══════════════ RIGHT: CONTROL RAIL ══════════════ */
 .right-col { background:var(--bg2); border-left:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
 
-/* BLOCKERS */
+/* DECISION DRIVERS (formerly Hard Blockers) */
 .blockers-panel { flex-shrink:0; border-bottom:1px solid var(--border); }
-.blocker-row { display:flex; align-items:center; padding:6px 12px; border-bottom:1px solid rgba(201,168,76,0.04); gap:6px; transition:background 0.2s; }
+
+/* Section dividers within drivers panel */
+.driver-section-hdr {
+  padding:3px 12px;
+  font-family:var(--mono); font-size:7px; letter-spacing:0.18em; text-transform:uppercase;
+  border-bottom:1px solid rgba(201,168,76,0.06);
+}
+.dsh-crit  { color:rgba(240,80,80,0.7); background:rgba(240,80,80,0.04); }
+.dsh-major { color:rgba(208,140,40,0.7); background:rgba(208,140,40,0.03); }
+.dsh-ctx   { color:rgba(201,168,76,0.5); background:rgba(201,168,76,0.02); }
+
+.blocker-row { display:flex; align-items:center; padding:5px 12px; border-bottom:1px solid rgba(201,168,76,0.04); gap:6px; transition:background 0.2s; }
 .blocker-row:last-child { border-bottom:none; }
 .blocker-row.triggered { background:rgba(217,64,64,0.05); }
-.blocker-sev-tag { font-family:var(--mono); font-size:7px; font-weight:700; letter-spacing:0.12em; padding:1px 5px; text-transform:uppercase; flex-shrink:0; width:52px; text-align:center; }
+.blocker-row.triggered-major { background:rgba(208,140,40,0.04); }
+.blocker-row.triggered-ctx { background:rgba(201,168,76,0.03); }
+
+/* score stack display in drivers panel */
+.driver-stack-row {
+  padding:5px 12px 6px;
+  display:flex; align-items:center; gap:6px;
+  border-bottom:1px solid var(--border);
+  background:var(--bg3);
+}
+.ds-label { font-family:var(--mono); font-size:7px; letter-spacing:0.14em; color:var(--muted2); text-transform:uppercase; flex:1; }
+.ds-pts {
+  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:0.06em;
+  padding:1px 7px; border:1px solid;
+}
+.ds-pts.ok         { color:var(--green-lt); border-color:rgba(46,204,113,0.35); background:rgba(46,204,113,0.07); }
+.ds-pts.caution    { color:var(--amber-lt); border-color:rgba(208,140,40,0.35); background:rgba(208,140,40,0.07); }
+.ds-pts.restricted { color:var(--amber-lt); border-color:rgba(240,120,40,0.4); background:rgba(240,120,40,0.08); }
+.ds-pts.blocked    { color:var(--red-lt); border-color:rgba(240,80,80,0.4); background:rgba(240,80,80,0.1); animation:blocked-pulse 1.4s infinite; }
+.ds-thresh { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:0.06em; }
+
+.blocker-sev-tag { font-family:var(--mono); font-size:7px; font-weight:700; letter-spacing:0.12em; padding:1px 5px; text-transform:uppercase; flex-shrink:0; width:48px; text-align:center; }
 .bsev-crit { color:var(--red-lt); border:1px solid rgba(240,80,80,0.35); background:rgba(240,80,80,0.1); }
 .bsev-maj  { color:var(--amber-lt); border:1px solid rgba(208,140,40,0.3); background:rgba(208,140,40,0.07); }
-.bsev-min  { color:var(--gold); border:1px solid var(--border2); background:rgba(201,168,76,0.06); }
-.bsev-info { color:var(--muted2); border:1px solid var(--border); background:transparent; }
+.bsev-ctx  { color:var(--gold); border:1px solid var(--border2); background:rgba(201,168,76,0.06); }
 .blocker-name { font-family:var(--mono); font-size:9px; letter-spacing:0.1em; color:var(--text-dim); flex:1; text-transform:uppercase; }
-.blocker-effect { font-family:var(--mono); font-size:7px; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+.blocker-pts { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:0.06em; flex-shrink:0; }
 .blocker-trigger { font-family:var(--mono); font-size:8px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:1px 5px; flex-shrink:0; }
 .bt-clear     { color:var(--muted); border:1px solid var(--border); }
 .bt-triggered { color:var(--red-lt); border:1px solid rgba(240,80,80,0.35); background:rgba(240,80,80,0.08); }
+.bt-triggered-maj { color:var(--amber-lt); border:1px solid rgba(208,140,40,0.35); background:rgba(208,140,40,0.07); }
+.bt-triggered-ctx { color:var(--gold); border:1px solid var(--border2); background:rgba(201,168,76,0.07); }
+
+/* directional indicator for HTF */
+.blocker-dir { font-family:var(--mono); font-size:7px; color:var(--muted); letter-spacing:0.06em; }
+.bdir-long  { color:var(--green-lt); }
+.bdir-short { color:var(--red-lt); }
 
 /* READINESS LADDER */
 .ladder-panel { padding:10px 12px; border-bottom:1px solid var(--border); flex-shrink:0; }
@@ -503,15 +554,15 @@ body::before {
   <div class="brand">
     <span class="brand-logo">Prolific</span>
     <div class="brand-sep"></div>
-    <span class="brand-tag">Confluence Engine V4</span>
+    <span class="brand-tag">Confluence Engine V5</span>
   </div>
   <div class="topbar-instruments">
     <button class="instrument-btn active" onclick="setTicker('ES1!')">ES1!</button>
     <button class="instrument-btn" onclick="setTicker('NQ1!')">NQ1!</button>
   </div>
   <div class="tf-row">
-    <button class="tf-btn" data-tf="1" onclick="setTF('1')">1M</button>
-    <button class="tf-btn active" data-tf="5" onclick="setTF('5')">5M</button>
+    <button class="tf-btn active" data-tf="1" onclick="setTF('1')">1M</button>
+    <button class="tf-btn" data-tf="5" onclick="setTF('5')">5M</button>
     <button class="tf-btn" data-tf="15" onclick="setTF('15')">15M</button>
     <button class="tf-btn" data-tf="60" onclick="setTF('60')">1H</button>
   </div>
@@ -652,36 +703,70 @@ body::before {
   <!-- RIGHT: CONTROL RAIL -->
   <div class="right-col">
 
-    <!-- BLOCKERS -->
+    <!-- DECISION DRIVERS (V5 — weighted stack, directional HTF) -->
     <div class="blockers-panel">
       <div class="col-header">
-        <span class="col-title">Hard Blockers</span>
+        <span class="col-title">Decision Drivers</span>
         <span class="col-tag" id="blocker-count">0 ACTIVE</span>
       </div>
-      <div class="blocker-row" id="brow-TRAP">
-        <span class="blocker-sev-tag bsev-crit">CRITICAL</span>
-        <span class="blocker-name">Trap % High</span>
-        <span class="blocker-effect" style="display:none">NO TRADE</span>
-        <span class="blocker-trigger bt-clear" id="bstat-TRAP">CLEAR</span>
+
+      <!-- Live stack score -->
+      <div class="driver-stack-row">
+        <span class="ds-label">Blocker Score</span>
+        <span class="ds-pts ok" id="driver-score-pts">0 pts</span>
+        <span class="ds-thresh" id="driver-score-thresh">4+=BLOCK</span>
       </div>
-      <div class="blocker-row" id="brow-CHOP">
-        <span class="blocker-sev-tag bsev-maj">MAJOR</span>
-        <span class="blocker-name">CHOP Score</span>
-        <span class="blocker-trigger bt-clear" id="bstat-CHOP">CLEAR</span>
+
+      <!-- Critical section -->
+      <div class="driver-section-hdr dsh-crit">🔴 Critical (3pts each)</div>
+      <div class="blocker-row" id="brow-HTF_LONG">
+        <span class="blocker-sev-tag bsev-crit">CRIT</span>
+        <span class="blocker-name">HTF Reject</span>
+        <span class="blocker-dir bdir-long" style="font-size:7px">▲</span>
+        <span class="blocker-pts">3</span>
+        <span class="blocker-trigger bt-clear" id="bstat-HTF_LONG">CLEAR</span>
       </div>
-      <div class="blocker-row" id="brow-HTF">
-        <span class="blocker-sev-tag bsev-crit">CRITICAL</span>
-        <span class="blocker-name">HTF Rejection</span>
-        <span class="blocker-trigger bt-clear" id="bstat-HTF">CLEAR</span>
+      <div class="blocker-row" id="brow-HTF_SHORT">
+        <span class="blocker-sev-tag bsev-crit">CRIT</span>
+        <span class="blocker-name">HTF Reject</span>
+        <span class="blocker-dir bdir-short" style="font-size:7px">▼</span>
+        <span class="blocker-pts">3</span>
+        <span class="blocker-trigger bt-clear" id="bstat-HTF_SHORT">CLEAR</span>
       </div>
+      <div class="blocker-row" id="brow-CHOP_EXT">
+        <span class="blocker-sev-tag bsev-crit">CRIT</span>
+        <span class="blocker-name">CHOP Extreme</span>
+        <span class="blocker-pts">3</span>
+        <span class="blocker-trigger bt-clear" id="bstat-CHOP_EXT">CLEAR</span>
+      </div>
+
+      <!-- Major section -->
+      <div class="driver-section-hdr dsh-major">🟠 Major (2pts each)</div>
       <div class="blocker-row" id="brow-EXHAUST">
-        <span class="blocker-sev-tag bsev-maj">MAJOR</span>
-        <span class="blocker-name">Trend Exhaustion</span>
+        <span class="blocker-sev-tag bsev-maj">MAJ</span>
+        <span class="blocker-name">Trend Exhaust</span>
+        <span class="blocker-pts">2</span>
         <span class="blocker-trigger bt-clear" id="bstat-EXHAUST">CLEAR</span>
       </div>
+
+      <!-- Context section -->
+      <div class="driver-section-hdr dsh-ctx">🟡 Context (1pt each)</div>
+      <div class="blocker-row" id="brow-CHOP_HIGH">
+        <span class="blocker-sev-tag bsev-ctx">CTX</span>
+        <span class="blocker-name">CHOP High</span>
+        <span class="blocker-pts">1</span>
+        <span class="blocker-trigger bt-clear" id="bstat-CHOP_HIGH">CLEAR</span>
+      </div>
+      <div class="blocker-row" id="brow-TRAP">
+        <span class="blocker-sev-tag bsev-ctx">CTX</span>
+        <span class="blocker-name">Trap % High</span>
+        <span class="blocker-pts">1</span>
+        <span class="blocker-trigger bt-clear" id="bstat-TRAP">CLEAR</span>
+      </div>
       <div class="blocker-row" id="brow-CVD_DIV">
-        <span class="blocker-sev-tag bsev-min">MINOR</span>
+        <span class="blocker-sev-tag bsev-ctx">CTX</span>
         <span class="blocker-name">CVD Divergence</span>
+        <span class="blocker-pts">1</span>
         <span class="blocker-trigger bt-clear" id="bstat-CVD_DIV">CLEAR</span>
       </div>
     </div>
@@ -732,8 +817,8 @@ body::before {
 <div class="bottombar">
   <div class="bb-left">
     <div class="bb-stat">Last: <span class="bb-val" id="stat-last">—</span></div>
-    <div class="bb-stat">TF: <span class="bb-val" id="stat-tf">5M</span></div>
-    <span class="kb-hint">1/2/3/4=TF · F=Filter · S/T=Tabs · C=Clear</span>
+    <div class="bb-stat">TF: <span class="bb-val" id="stat-tf">1M</span></div>
+    <span class="kb-hint">1/2/3/4=TF · S/T=Tabs · C=Clear</span>
   </div>
   <button class="wh-btn" onclick="toggleWebhook()">⌘ WEBHOOK</button>
 </div>
@@ -751,7 +836,7 @@ body::before {
     </div>
     <div class="wh-note">
       All 6 indicators → set webhook URL above in TradingView alerts. Frequency: Once Per Bar Close.<br>
-      B&R Engine → include <strong style="color:var(--gold)">"event":"ENTRY"</strong> with direction, level_type, entry_price, stop_price, tp1–tp3, a_plus_score.<br>
+      B&R Engine → "Any alert() function call" with Message field cleared (Pine builds JSON internally).<br>
       Exit events: <strong style="color:var(--gold)">"event":"TP1"/"TP2"/"TP3"/"SL"</strong> with exit_price, mfe_R, mae_R.
     </div>
   </div>
@@ -763,12 +848,76 @@ const INDICATORS = ['BR_ENGINE','VPS','VAF','MBA','PTEA','CVD'];
 const IND_LABELS = {BR_ENGINE:'B&R Engine',VPS:'Vol Pressure',VAF:'Value Area',MBA:'Mkt Breadth',PTEA:'Trend Exhaust',CVD:'CVD'};
 const IND_DESC   = {BR_ENGINE:'Structure · Entry · MCR',VPS:'Trap · CHOP · HTF · Flow',VAF:'VAH · POC · VAL · Prior RTH',MBA:'Advance · Decline · Breadth',PTEA:'Momentum · Exhaust · ADX',CVD:'Cumulative Vol Delta · Div'};
 const WEIGHT = 100/6;
-const BLOCKER_SEV = {TRAP:'CRITICAL',CHOP:'MAJOR',HTF:'CRITICAL',EXHAUST:'MAJOR',CVD_DIV:'MINOR'};
-const BLOCKER_EFFECT = {TRAP:'No trades allowed',CHOP:'Reduce size / caution',HTF:'No trades allowed',EXHAUST:'Reduce aggression',CVD_DIV:'Context only'};
+
+// ══════════════ V5 BLOCKER MATRIX ══════════════
+// Points: Critical=3, Major=2, Context=1
+// Thresholds: 4+=BLOCK, 3=RESTRICTED, 2=CAUTION, 0-1=QUALIFIED
+// HTF: DIRECTIONAL ONLY — blocks only the direction being rejected
+// CHOP: HIGH(70-84)=1 Context, EXTREME(85+)=3 Critical
+// TRAP: 1 Context
+// CVD DIV: 1 Context
+// EXHAUST: 2 Major
+const BLOCK_THRESHOLD      = 4;
+const RESTRICTED_THRESHOLD = 3;
+const CAUTION_THRESHOLD    = 2;
+
+function computeBlockerScore(blockers, dominant) {
+  let longPts  = 0;
+  let shortPts = 0;
+  const active = {};
+
+  // HTF Rejection — directional only
+  // htf_rejected_long = rejection above (blocks longs)
+  // htf_rejected_short = rejection below (blocks shorts)
+  if (blockers.HTF_LONG)  { longPts  += 3; active.HTF_LONG  = 3; }
+  if (blockers.HTF_SHORT) { shortPts += 3; active.HTF_SHORT = 3; }
+
+  // CHOP Extreme (85+) = Critical 3pts both directions
+  if (blockers.CHOP_EXT) {
+    longPts  += 3; shortPts += 3;
+    active.CHOP_EXT = 3;
+  }
+  // CHOP High (70-84) = Context 1pt both directions
+  else if (blockers.CHOP_HIGH) {
+    longPts  += 1; shortPts += 1;
+    active.CHOP_HIGH = 1;
+  }
+
+  // Trend Exhaustion = Major 2pts both directions
+  if (blockers.EXHAUST) {
+    longPts  += 2; shortPts += 2;
+    active.EXHAUST = 2;
+  }
+
+  // Trap % = Context 1pt both directions
+  if (blockers.TRAP) {
+    longPts  += 1; shortPts += 1;
+    active.TRAP = 1;
+  }
+
+  // CVD Divergence = Context 1pt both directions
+  if (blockers.CVD_DIV) {
+    longPts  += 1; shortPts += 1;
+    active.CVD_DIV = 1;
+  }
+
+  return { longPts, shortPts, active };
+}
+
+function getPermission(longPts, shortPts, longScore, shortScore, dominant) {
+  const dirPts = dominant === 'LONG' ? longPts : dominant === 'SHORT' ? shortPts : Math.max(longPts, shortPts);
+
+  if (dirPts >= BLOCK_THRESHOLD)      return 'BLOCKED';
+  if (dirPts >= RESTRICTED_THRESHOLD) return 'RESTRICTED';
+  if (dirPts >= CAUTION_THRESHOLD)    return 'CAUTION';
+  if (longScore >= 67 || shortScore >= 67) return 'QUALIFIED';
+  if (longScore > 0 || shortScore > 0)     return 'DEVELOPING';
+  return 'WAITING';
+}
 
 // ══════════════ STATE ══════════════
 let tfState    = {'1':{},'5':{},'15':{},'60':{}};
-let activeTF   = '5';
+let activeTF   = '1';
 let activeTicker = 'ES1!';
 let signalLogs = {'1':[],'5':[],'15':[],'60':[]};
 let tradeFeed  = [];
@@ -779,12 +928,12 @@ let wsRetries=0, ws=null, audioCtx=null;
 const MAX_RETRIES = 5;
 let aiAbortCtrl = null, lastAIKey = '';
 
-try{const a=localStorage.getItem('pce_v4_tf');if(a)tfState=JSON.parse(a);}catch(e){}
-try{const b=localStorage.getItem('pce_v4_tr');if(b)tradeFeed=JSON.parse(b);}catch(e){}
-try{const c=localStorage.getItem('pce_v4_op');if(c)openTrades=JSON.parse(c);}catch(e){}
+try{const a=localStorage.getItem('pce_v5_tf');if(a)tfState=JSON.parse(a);}catch(e){}
+try{const b=localStorage.getItem('pce_v5_tr');if(b)tradeFeed=JSON.parse(b);}catch(e){}
+try{const c=localStorage.getItem('pce_v5_op');if(c)openTrades=JSON.parse(c);}catch(e){}
 
 function getState(){return tfState[activeTF]||{};}
-function save(){try{localStorage.setItem('pce_v4_tf',JSON.stringify(tfState));localStorage.setItem('pce_v4_tr',JSON.stringify(tradeFeed));localStorage.setItem('pce_v4_op',JSON.stringify(openTrades));}catch(e){}}
+function save(){try{localStorage.setItem('pce_v5_tf',JSON.stringify(tfState));localStorage.setItem('pce_v5_tr',JSON.stringify(tradeFeed));localStorage.setItem('pce_v5_op',JSON.stringify(openTrades));}catch(e){}}
 
 // ══════════════ BUILD ENGINE TILES ══════════════
 function buildTiles(){
@@ -802,8 +951,7 @@ buildTiles();
 // ══════════════ CLOCK ══════════════
 function getETComponents(){
   const now=new Date();
-  const et=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
-  return et;
+  return new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);
 }
 function updateClock(){
   const et=getETComponents();
@@ -921,7 +1069,7 @@ function clearSession(){
   tfState={'1':{},'5':{},'15':{},'60':{}};
   signalLogs={'1':[],'5':[],'15':[],'60':[]};
   sigCount=0; tradeCount=0; prevLongV=''; prevShortV='';
-  try{localStorage.removeItem('pce_v4_tf');localStorage.removeItem('pce_v4_tr');localStorage.removeItem('pce_v4_op');}catch(e){}
+  try{localStorage.removeItem('pce_v5_tf');localStorage.removeItem('pce_v5_tr');localStorage.removeItem('pce_v5_op');}catch(e){}
   renderAll(); rebuildSignalLog(); rebuildTradeLog(); updateSessionStats();
   document.getElementById('ss-sigs').textContent='0';
 }
@@ -930,7 +1078,18 @@ function clearSession(){
 function renderAll(){
   const state=getState();
   let bull=0,bear=0,neutral=0,longScore=0,shortScore=0;
-  const blockers={};
+
+  // Parse blocker flags from VPS / PTEA / CVD signals
+  const rawBlockers = {
+    HTF_LONG:  false,  // HTF rejection above — blocks longs only
+    HTF_SHORT: false,  // HTF rejection below — blocks shorts only
+    CHOP_EXT:  false,  // CHOP >= 85 (Critical)
+    CHOP_HIGH: false,  // CHOP 70-84 (Context)
+    EXHAUST:   false,  // Trend Exhaustion (Major)
+    TRAP:      false,  // Trap % High (Context)
+    CVD_DIV:   false,  // CVD Divergence (Context)
+  };
+
   const activeInds=[];
 
   INDICATORS.forEach(ind=>{
@@ -939,20 +1098,44 @@ function renderAll(){
     if(!d){if(tile)tile.style.opacity='0.35';return;}
     const tickerMatch=!activeTicker||(d.ticker||'').toUpperCase()===activeTicker;
     if(!tickerMatch){if(tile)tile.style.opacity='0.18';return;}
+
     const bias=d.bias||'NEUTRAL';
     const blocker=d.blocker===true;
     if(tile)tile.style.opacity='1';
     if(bias==='BULL'){bull++;longScore+=WEIGHT;}
     if(bias==='BEAR'){bear++;shortScore+=WEIGHT;}
     if(bias==='NEUTRAL')neutral++;
-    if(d.trap_triggered)blockers['TRAP']=true;
-    if(d.chop_triggered)blockers['CHOP']=true;
-    if(d.htf_rejected)blockers['HTF']=true;
-    if(d.exhaust_triggered)blockers['EXHAUST']=true;
-    if(d.divergence)blockers['CVD_DIV']=true;
+
+    // Parse blocker flags from signals
+    if(d.trap_triggered) rawBlockers.TRAP = true;
+
+    // CHOP: parse chop_score if available, else use chop_triggered flag
+    if(d.chop_score != null) {
+      const cs = parseFloat(d.chop_score);
+      if(cs >= 85) rawBlockers.CHOP_EXT = true;
+      else if(cs >= 70) rawBlockers.CHOP_HIGH = true;
+    } else if(d.chop_triggered) {
+      // fallback: no score, just flag — treat as High (not Extreme)
+      rawBlockers.CHOP_HIGH = true;
+    }
+
+    // HTF Rejection — directional
+    // Prefer explicit htf_rejected_long / htf_rejected_short if available
+    if(d.htf_rejected_long  != null) { if(d.htf_rejected_long)  rawBlockers.HTF_LONG  = true; }
+    else if(d.htf_rejected) {
+      // Legacy: htf_rejected without direction — apply against dominant bias direction
+      if(bias === 'BEAR' || bias === 'NEUTRAL') rawBlockers.HTF_LONG  = true;
+      if(bias === 'BULL' || bias === 'NEUTRAL') rawBlockers.HTF_SHORT = true;
+    }
+    if(d.htf_rejected_short != null) { if(d.htf_rejected_short) rawBlockers.HTF_SHORT = true; }
+
+    if(d.exhaust_triggered) rawBlockers.EXHAUST = true;
+    if(d.divergence)        rawBlockers.CVD_DIV = true;
+
     activeInds.push({ind,bias,blocker,d});
+
     if(tile){
-      tile.dataset.state=blocker?'BLOCKED':bias;
+      tile.dataset.state = blocker ? 'BLOCKED' : bias;
       const badge=document.getElementById('ebadge-'+ind);
       badge.className='eng-badge '+(blocker?'blocked':bias.toLowerCase());
       badge.textContent=blocker?'BLOCKED':bias;
@@ -964,85 +1147,132 @@ function renderAll(){
   });
 
   longScore=Math.round(longScore); shortScore=Math.round(shortScore);
-  const anyBlocker=Object.values(blockers).some(Boolean);
-  const critBlocker=blockers['TRAP']||blockers['HTF'];
   const dominant=bull>bear?'LONG':bear>bull?'SHORT':'NEUTRAL';
   const total=bull+bear+neutral;
   const hasSigs=total>0;
 
-  // Scores
+  // ── V5 BLOCKER SCORE ──
+  const {longPts, shortPts, active} = computeBlockerScore(rawBlockers, dominant);
+  const dirPts = dominant === 'LONG' ? longPts : dominant === 'SHORT' ? shortPts : Math.max(longPts, shortPts);
+  const permState = hasSigs ? getPermission(longPts, shortPts, longScore, shortScore, dominant) : 'WAITING';
+
+  // Scores display
   document.getElementById('long-score').textContent=longScore;
   document.getElementById('short-score').textContent=shortScore;
   document.getElementById('long-align').textContent=bull+' of 6 aligned';
   document.getElementById('short-align').textContent=bear+' of 6 aligned';
   setScoreInterp('long',longScore,bull);
   setScoreInterp('short',shortScore,bear);
-  setQualityGrades(longScore,shortScore,blockers,dominant);
+  setQualityGrades(longScore,shortScore,rawBlockers,dominant);
 
-  // Permission state
-  let permState, permSub, permCls, biasCls, biasText;
-  if(!hasSigs){permState='WAITING';permSub='Awaiting confluence data';permCls='waiting';biasCls='bias-neutral';biasText='NEUTRAL';}
-  else if(critBlocker){permState='BLOCKED';permSub='Critical blocker active — no trades';permCls='blocked';biasCls='bias-neutral';biasText='BLOCKED';}
-  else if(anyBlocker){permState='RESTRICTED';permSub='Major blocker active — caution';permCls='restricted';biasCls=dominant==='LONG'?'bias-long':dominant==='SHORT'?'bias-short':'bias-neutral';biasText=dominant==='NEUTRAL'?'NEUTRAL':dominant+' BIAS';}
-  else if(longScore>=67||shortScore>=67){permState='QUALIFIED';permSub=(longScore>=shortScore?bull:bear)+'/6 indicators aligned '+(longScore>=shortScore?'LONG':'SHORT');permCls='qualified';biasCls=dominant==='LONG'?'bias-long':'bias-short';biasText=dominant+' BIAS';}
-  else if(hasSigs){permState='DEVELOPING';permSub='Building confluence — monitor';permCls='waiting';biasCls=dominant==='NEUTRAL'?'bias-neutral':dominant==='LONG'?'bias-long':'bias-short';biasText=dominant==='NEUTRAL'?'NEUTRAL':dominant+' BIAS';}
-  else{permState='WAITING';permSub='Awaiting signals';permCls='waiting';biasCls='bias-neutral';biasText='NEUTRAL';}
+  // Permission state UI
+  const permMap = {
+    WAITING:    {cls:'waiting',    biasCls:'bias-neutral', biasText:'NEUTRAL',  sub:'Awaiting confluence data'},
+    DEVELOPING: {cls:'waiting',    biasCls:dominant==='LONG'?'bias-long':dominant==='SHORT'?'bias-short':'bias-neutral', biasText:dominant==='NEUTRAL'?'NEUTRAL':dominant+' BIAS', sub:'Building confluence — monitor'},
+    CAUTION:    {cls:'caution',    biasCls:dominant==='LONG'?'bias-long':dominant==='SHORT'?'bias-short':'bias-neutral', biasText:dominant==='NEUTRAL'?'NEUTRAL':dominant+' BIAS', sub:dirPts+'pt conflict — confirm before entry'},
+    RESTRICTED: {cls:'restricted', biasCls:dominant==='LONG'?'bias-long':dominant==='SHORT'?'bias-short':'bias-neutral', biasText:dominant==='NEUTRAL'?'NEUTRAL':dominant+' BIAS', sub:dirPts+'pts — restricted size, need confirmation'},
+    BLOCKED:    {cls:'blocked',    biasCls:'bias-neutral', biasText:'BLOCKED',  sub:dirPts+'pts — no trades until blocker(s) clear'},
+    QUALIFIED:  {cls:'qualified',  biasCls:dominant==='LONG'?'bias-long':'bias-short', biasText:dominant+' BIAS', sub:(dominant==='LONG'?bull:bear)+'/6 aligned — watch for entry'},
+  };
+  const pm = permMap[permState] || permMap.WAITING;
 
-  document.getElementById('perm-state').textContent=permState;
-  document.getElementById('perm-state').className='perm-state '+permCls;
-  document.getElementById('perm-subtitle').textContent=permSub;
-  document.getElementById('perm-align-tag').textContent=(bull+bear)+'/6 ALIGNED';
+  document.getElementById('perm-state').textContent = permState;
+  document.getElementById('perm-state').className   = 'perm-state ' + pm.cls;
+  document.getElementById('perm-subtitle').textContent = pm.sub;
+  document.getElementById('perm-align-tag').textContent = (bull+bear)+'/6 ALIGNED';
+
   const topBias=document.getElementById('top-bias');
-  topBias.className='bias-badge '+biasCls; topBias.textContent=biasText;
+  topBias.className='bias-badge '+pm.biasCls; topBias.textContent=pm.biasText;
   const topPerm=document.getElementById('top-perm');
-  topPerm.className='perm-badge perm-'+(permCls==='qualified'||permCls==='active'?'active':permCls==='blocked'?'blocked':permCls==='restricted'?'restricted':'waiting');
-  topPerm.textContent=permState;
+  const permBadgeCls = permState==='QUALIFIED'||permState==='DEVELOPING'?'perm-active':permState==='BLOCKED'?'perm-blocked':permState==='RESTRICTED'||permState==='CAUTION'?'perm-caution':'perm-waiting';
+  topPerm.className='perm-badge '+permBadgeCls; topPerm.textContent=permState;
 
   // Setup type
   let setupType='NO SETUP', setupCls='stt-none';
   if(longScore>=67||shortScore>=67){
     if(state['CVD']?.divergence){setupType='REVERSAL';setupCls='stt-reversal';}
-    else if(state['VPS']?.trap_triggered){setupType='B&R';setupCls='stt-br';}
     else{setupType='B&R';setupCls='stt-br';}
   }
   const stEl=document.getElementById('setup-type');
   stEl.textContent=setupType; stEl.className='setup-type-tag '+setupCls;
 
   // Market state tag
-  setMarketStateTag(state,blockers,longScore,shortScore);
+  setMarketStateTag(state,rawBlockers,longScore,shortScore);
 
-  // Blockers
-  const bkeys=['TRAP','CHOP','HTF','EXHAUST','CVD_DIV'];
-  let tb=0;
-  bkeys.forEach(k=>{
-    const active=!!blockers[k]; if(active)tb++;
-    const row=document.getElementById('brow-'+k);
-    if(row)row.classList.toggle('triggered',active);
-    const stat=document.getElementById('bstat-'+k);
-    if(stat){stat.className='blocker-trigger '+(active?'bt-triggered':'bt-clear');stat.textContent=active?'TRIGGERED':'CLEAR';}
-  });
-  document.getElementById('blocker-count').textContent=tb+' ACTIVE';
+  // ── V5 DECISION DRIVERS UI ──
+  renderDriversPanel(rawBlockers, active, longPts, shortPts, dominant, permState);
 
   // Why panel
-  renderWhyPanel(dominant,longScore,shortScore,blockers,activeInds,permState);
+  renderWhyPanel(dominant,longScore,shortScore,rawBlockers,active,activeInds,permState,longPts,shortPts,dirPts);
 
   // Activation conditions
-  renderActivationConditions(dominant,longScore,shortScore,blockers,bull,bear);
+  renderActivationConditions(dominant,longScore,shortScore,rawBlockers,bull,bear,dirPts);
 
   // Readiness ladder
-  renderLadder(hasSigs,dominant,anyBlocker,longScore,shortScore,blockers,state);
+  renderLadder(hasSigs,dominant,permState,longScore,shortScore,rawBlockers,state);
 
   // Market phase
   renderPhase(state,dominant);
 
   // Verdicts
-  const nL=getVerdict(longScore,anyBlocker,bull);
-  const nS=getVerdict(shortScore,anyBlocker,bear);
+  const nL=getVerdict(longScore,longPts,bull);
+  const nS=getVerdict(shortScore,shortPts,bear);
   if(nL!==prevLongV&&nL==='GO')triggerGO('long');
   if(nS!==prevShortV&&nS==='GO')triggerGO('short');
   prevLongV=nL; prevShortV=nS;
-  renderVerdict('long',longScore,anyBlocker,bull,dominant,state);
-  renderVerdict('short',shortScore,anyBlocker,bear,dominant,state);
+  renderVerdict('long',longScore,longPts,bull,dominant,state);
+  renderVerdict('short',shortScore,shortPts,bear,dominant,state);
+}
+
+// ── RENDER DRIVERS PANEL (V5) ──
+function renderDriversPanel(rawBlockers, active, longPts, shortPts, dominant, permState) {
+  const dirPts = dominant === 'LONG' ? longPts : dominant === 'SHORT' ? shortPts : Math.max(longPts, shortPts);
+  const tb = Object.keys(active).length;
+  document.getElementById('blocker-count').textContent = tb + ' ACTIVE';
+
+  // Score display
+  const scoreEl = document.getElementById('driver-score-pts');
+  const threshEl = document.getElementById('driver-score-thresh');
+  scoreEl.textContent = dirPts + ' pts';
+  if(dirPts >= BLOCK_THRESHOLD) {
+    scoreEl.className = 'ds-pts blocked';
+    threshEl.textContent = 'BLOCKED';
+  } else if(dirPts >= RESTRICTED_THRESHOLD) {
+    scoreEl.className = 'ds-pts restricted';
+    threshEl.textContent = 'RESTRICTED';
+  } else if(dirPts >= CAUTION_THRESHOLD) {
+    scoreEl.className = 'ds-pts caution';
+    threshEl.textContent = 'CAUTION';
+  } else {
+    scoreEl.className = 'ds-pts ok';
+    threshEl.textContent = '4+=BLOCK';
+  }
+
+  // Individual driver rows
+  const rows = {
+    HTF_LONG:  { active: rawBlockers.HTF_LONG,  cls: 'triggered',       statCls: 'bt-triggered',     label: 'BLOCKS ▲' },
+    HTF_SHORT: { active: rawBlockers.HTF_SHORT, cls: 'triggered',       statCls: 'bt-triggered',     label: 'BLOCKS ▼' },
+    CHOP_EXT:  { active: rawBlockers.CHOP_EXT,  cls: 'triggered',       statCls: 'bt-triggered',     label: 'EXTREME' },
+    EXHAUST:   { active: rawBlockers.EXHAUST,   cls: 'triggered-major', statCls: 'bt-triggered-maj', label: 'ACTIVE' },
+    CHOP_HIGH: { active: rawBlockers.CHOP_HIGH, cls: 'triggered-ctx',   statCls: 'bt-triggered-ctx', label: 'HIGH' },
+    TRAP:      { active: rawBlockers.TRAP,      cls: 'triggered-ctx',   statCls: 'bt-triggered-ctx', label: 'ACTIVE' },
+    CVD_DIV:   { active: rawBlockers.CVD_DIV,   cls: 'triggered-ctx',   statCls: 'bt-triggered-ctx', label: 'ACTIVE' },
+  };
+
+  Object.entries(rows).forEach(([key, cfg]) => {
+    const row  = document.getElementById('brow-' + key);
+    const stat = document.getElementById('bstat-' + key);
+    if(!row || !stat) return;
+    row.classList.remove('triggered','triggered-major','triggered-ctx');
+    if(cfg.active) {
+      row.classList.add(cfg.cls);
+      stat.className = 'blocker-trigger ' + cfg.statCls;
+      stat.textContent = cfg.label;
+    } else {
+      stat.className = 'blocker-trigger bt-clear';
+      stat.textContent = 'CLEAR';
+    }
+  });
 }
 
 function setScoreInterp(dir,score,aligned){
@@ -1058,40 +1288,29 @@ function setScoreInterp(dir,score,aligned){
   el.textContent=txt; el.className='score-interp '+cls;
 }
 
-function setQualityGrades(ls,ss,blockers,dominant){
-  const brState=getState()['BR_ENGINE'];
-  const vpsState=getState()['VPS'];
-  const cvdState=getState()['CVD'];
-  const vaState=getState()['VAF'];
-
+function setQualityGrades(ls,ss,rawBlockers,dominant){
+  const state=getState();
+  const brState=state['BR_ENGINE'];
+  const cvdState=state['CVD'];
+  const anyB=rawBlockers.CHOP_EXT||rawBlockers.HTF_LONG||rawBlockers.HTF_SHORT;
   const hasStruct=brState&&brState.bias!=='NEUTRAL';
   const hasFlow=cvdState&&cvdState.bias!=='NEUTRAL'&&!cvdState.divergence;
   const hasEntry=ls>=67||ss>=67;
-  const anyB=Object.values(blockers).some(Boolean);
-
-  const grade=(cond1,cond2,cond3)=>{
-    if(anyB)return{t:'—',c:'grade-na'};
-    if(cond1&&cond2&&cond3)return{t:'A',c:'grade-a'};
-    if(cond1&&cond2)return{t:'B+',c:'grade-b'};
-    if(cond1)return{t:'B',c:'grade-b'};
-    if(cond2||cond3)return{t:'C',c:'grade-c'};
-    return{t:'D',c:'grade-d'};
-  };
-
-  const sq=grade(hasStruct,hasFlow,hasEntry);
   ['lq-struct','sq-struct'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent=hasStruct?'A':'C';e.className='sq-val '+(hasStruct?'grade-a':'grade-c');}});
   ['lq-flow','sq-flow'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent=hasFlow?'A':'C';e.className='sq-val '+(hasFlow?'grade-a':'grade-c');}});
   ['lq-entry','sq-entry'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent=hasEntry?'A':'D';e.className='sq-val '+(hasEntry?'grade-a':'grade-d');}});
 }
 
-function setMarketStateTag(state,blockers,ls,ss){
+function setMarketStateTag(state,rawBlockers,ls,ss){
   const el=document.getElementById('market-state-tag');
-  const chop=blockers['CHOP'];
-  const trap=blockers['TRAP'];
+  const chopExtreme=rawBlockers.CHOP_EXT;
+  const chopHigh=rawBlockers.CHOP_HIGH;
+  const trap=rawBlockers.TRAP;
   const exhaust=state['PTEA']?.exhaust_triggered;
   let txt='READING',cls='mst-unknown';
   if(!Object.keys(state).length){txt='READING';cls='mst-unknown';}
-  else if(chop||trap){txt='CHOP RISK';cls='mst-chop';}
+  else if(chopExtreme){txt='CHOP RISK';cls='mst-chop';}
+  else if(chopHigh&&trap){txt='CHOP RISK';cls='mst-chop';}
   else if(exhaust){txt='ROTATIONAL';cls='mst-balanced';}
   else if(ls>=84||ss>=84){txt='EXPANSION';cls='mst-expansion';}
   else if(ls>=50||ss>=50){txt='TREND DAY';cls='mst-trend';}
@@ -1099,11 +1318,10 @@ function setMarketStateTag(state,blockers,ls,ss){
   el.textContent=txt; el.className='market-state-tag '+cls;
 }
 
-function renderWhyPanel(dominant,ls,ss,blockers,activeInds,permState){
+function renderWhyPanel(dominant,ls,ss,rawBlockers,active,activeInds,permState,longPts,shortPts,dirPts){
   const container=document.getElementById('reason-list');
   const titleEl=document.getElementById('why-title');
   const state=getState();
-  const anyB=Object.values(blockers).some(Boolean);
   container.innerHTML='';
 
   if(permState==='WAITING'||!activeInds.length){
@@ -1111,35 +1329,45 @@ function renderWhyPanel(dominant,ls,ss,blockers,activeInds,permState){
     return;
   }
 
-  if(anyB){
-    titleEl.textContent='TRADE DENIED — PRIMARY REASONS';
-    if(blockers['TRAP'])addReason(container,'CRITICAL','Trap % High','No trades allowed — waiting for initiative buyers/sellers');
-    if(blockers['HTF'])addReason(container,'CRITICAL','HTF Rejection Active','Price rejected at HTF level — structure not accepted');
-    if(blockers['CHOP'])addReason(container,'MAJOR','CHOP Score Elevated','Market is rotational — reduce size or wait for expansion');
-    if(blockers['EXHAUST'])addReason(container,'MAJOR','Trend Exhaustion Signal','Momentum fading against trade direction');
-    if(blockers['CVD_DIV'])addReason(container,'MINOR','CVD Divergence Present','Volume delta not confirming price — caution on entries');
-    const alignMissing=6-(ls>=50?Math.round(ls/WEIGHT):Math.round(ss/WEIGHT));
-    if(alignMissing>2)addReason(container,'MAJOR','Insufficient Alignment','Only '+(dominant==='LONG'?Math.round(ls/WEIGHT):Math.round(ss/WEIGHT))+'/6 indicators confirming — need 4+');
-  }else if(ls>=67||ss>=67){
+  if(permState==='BLOCKED'){
+    titleEl.textContent='TRADE DENIED — '+dirPts+'PT BLOCKER STACK';
+    if(rawBlockers.HTF_LONG)  addReason(container,'CRITICAL','HTF Rejection Above (3pts)','Price rejected at HTF structure — LONG blocked');
+    if(rawBlockers.HTF_SHORT) addReason(container,'CRITICAL','HTF Rejection Below (3pts)','Price rejected at HTF structure — SHORT blocked');
+    if(rawBlockers.CHOP_EXT)  addReason(container,'CRITICAL','CHOP Extreme 85+ (3pts)','Market fully rotational — no directional setups');
+    if(rawBlockers.EXHAUST)   addReason(container,'MAJOR','Trend Exhaustion (2pts)','Momentum stalling — continuation risk elevated');
+    if(rawBlockers.CHOP_HIGH) addReason(container,'MINOR','CHOP High 70-84 (1pt)','Reduced expansion probability — size down');
+    if(rawBlockers.TRAP)      addReason(container,'MINOR','Trap % High (1pt)','Initiative participation below threshold');
+    if(rawBlockers.CVD_DIV)   addReason(container,'MINOR','CVD Divergence (1pt)','Delta not confirming price direction');
+  } else if(permState==='RESTRICTED'){
+    titleEl.textContent='RESTRICTED — '+dirPts+'PT STACK · CONFIRM BEFORE ENTRY';
+    if(rawBlockers.EXHAUST)   addReason(container,'MAJOR','Trend Exhaustion (2pts)','Reduce size — require CVD + level hold confirmation');
+    if(rawBlockers.CHOP_HIGH) addReason(container,'MINOR','CHOP High (1pt)','Context flag — expansion probability reduced');
+    if(rawBlockers.TRAP)      addReason(container,'MINOR','Trap % High (1pt)','Wait for initiative shift before entering');
+    if(rawBlockers.CVD_DIV)   addReason(container,'MINOR','CVD Divergence (1pt)','Delta diverging — require retest confirmation');
+    const aligned=dominant==='LONG'?Math.round(ls/WEIGHT):Math.round(ss/WEIGHT);
+    if(aligned>=4)addReason(container,'POSITIVE',aligned+'/6 Indicators Aligned','Core bias confirmed — trade with smaller size');
+  } else if(permState==='CAUTION'){
+    titleEl.textContent='CAUTION — '+dirPts+'PT STACK · VALID WITH CONFIRMATION';
+    if(rawBlockers.EXHAUST)   addReason(container,'MAJOR','Trend Exhaustion (2pts)','Momentum caution — wait for new expansion leg');
+    if(rawBlockers.CHOP_HIGH) addReason(container,'MINOR','CHOP High (1pt)','Slightly elevated chop — acceptable for B&R');
+    if(rawBlockers.TRAP)      addReason(container,'MINOR','Trap % High (1pt)','Participation below ideal — reduce size');
+    if(rawBlockers.CVD_DIV)   addReason(container,'MINOR','CVD Divergence (1pt)','Context flag only — retest + hold required');
+    const aligned=dominant==='LONG'?Math.round(ls/WEIGHT):Math.round(ss/WEIGHT);
+    if(aligned>=4)addReason(container,'POSITIVE',aligned+'/6 Aligned · Caution Mode','B&R entry valid — confirm retest bar close');
+  } else if(permState==='QUALIFIED'){
     titleEl.textContent='TRADE QUALIFIED — SUPPORTING FACTORS';
     const dir=ls>=ss?'LONG':'SHORT';
     const aligned=dir==='LONG'?Math.round(ls/WEIGHT):Math.round(ss/WEIGHT);
-    addReason(container,'POSITIVE',aligned+'/6 Indicators Aligned','Core confluence threshold achieved');
-    if(state['BR_ENGINE']?.bias===(dir==='LONG'?'BULL':'BEAR'))addReason(container,'POSITIVE','B&R Engine Confirming','Structure, entry, and MCR aligned with '+dir+' direction');
-    if(state['VPS']?.bias===(dir==='LONG'?'BULL':'BEAR'))addReason(container,'POSITIVE','Volume Pressure Supporting','Initiative participation present — not trapped');
-    if(state['CVD']?.bias===(dir==='LONG'?'BULL':'BEAR')&&!state['CVD']?.divergence)addReason(container,'POSITIVE','CVD Confirming','Cumulative delta aligned with '+dir+' direction');
-    if(state['MBA']?.bias==='NEUTRAL')addReason(container,'MINOR','Breadth Neutral','Market breadth not confirming — size down slightly');
-  }else{
-    titleEl.textContent='TRADE RESTRICTED — CAUTION FACTORS';
+    addReason(container,'POSITIVE',aligned+'/6 Indicators Aligned · 0pt Stack','Full confluence — execute on B&R signal');
+    if(state['BR_ENGINE']?.bias===(dir==='LONG'?'BULL':'BEAR'))addReason(container,'POSITIVE','B&R Engine Confirming','Structure, entry, and MCR aligned');
+    if(state['VPS']?.bias===(dir==='LONG'?'BULL':'BEAR'))addReason(container,'POSITIVE','Volume Pressure Supporting','Initiative participation confirmed');
+    if(state['CVD']?.bias===(dir==='LONG'?'BULL':'BEAR')&&!state['CVD']?.divergence)addReason(container,'POSITIVE','CVD Confirming','Delta aligned with '+dir+' direction');
+  } else {
+    titleEl.textContent='TRADE DEVELOPING — BUILDING CONFLUENCE';
     const aligned=Math.max(Math.round(ls/WEIGHT),Math.round(ss/WEIGHT));
-    addReason(container,'MAJOR','Partial Confluence Only',aligned+'/6 aligned — need '+(4-aligned)+' more indicators to qualify');
-    const conflicts=activeInds.filter(({ind,bias})=>{
-      if(dominant==='LONG'&&bias==='BEAR')return true;
-      if(dominant==='SHORT'&&bias==='BULL')return true;
-      return false;
-    });
-    if(conflicts.length)addReason(container,'MAJOR',IND_LABELS[conflicts[0].ind]+' Conflicting',''+IND_LABELS[conflicts[0].ind]+' reading against dominant bias — wait for resolution');
-    if(state['CVD']?.divergence)addReason(container,'MINOR','CVD Divergence','Volume delta diverging from price direction');
+    addReason(container,'MAJOR','Partial Confluence',aligned+'/6 aligned — need '+(4-aligned)+' more to qualify');
+    const conflicts=activeInds.filter(({bias})=>(dominant==='LONG'&&bias==='BEAR')||(dominant==='SHORT'&&bias==='BULL'));
+    if(conflicts.length)addReason(container,'MINOR',IND_LABELS[conflicts[0].ind]+' Conflicting','Against dominant bias — watch for resolution');
   }
 }
 
@@ -1152,68 +1380,59 @@ function addReason(container,sev,text,effect){
   container.appendChild(el);
 }
 
-function renderActivationConditions(dominant,ls,ss,blockers,bull,bear){
+function renderActivationConditions(dominant,ls,ss,rawBlockers,bull,bear,dirPts){
   const container=document.getElementById('condition-list');
   const state=getState();
-  const anyB=Object.values(blockers).some(Boolean);
   container.innerHTML='';
-
   if(!Object.keys(state).length){container.innerHTML='<div class="empty-state" style="padding:6px 0">Awaiting signals...</div>';return;}
 
   const dir=dominant==='NEUTRAL'?(ls>ss?'LONG':'SHORT'):dominant;
   const aligned=dir==='LONG'?bull:bear;
-  const needed=4-aligned;
-
   const conds=[];
 
-  if(blockers['TRAP'])conds.push({text:'Trap % must clear (VPS shift to initiative)',met:false});
-  if(blockers['HTF'])conds.push({text:'HTF rejection must resolve (acceptance above/below level)',met:false});
-  if(blockers['CHOP'])conds.push({text:'CHOP score must drop below threshold',met:false});
-  if(blockers['EXHAUST'])conds.push({text:'Trend exhaustion must reset (new momentum leg)',met:false});
-  if(blockers['CVD_DIV'])conds.push({text:'CVD divergence must clear (delta realign with price)',met:false});
-  if(needed>0)conds.push({text:`${aligned}/6 aligned — need ${needed} more indicator(s) to qualify`,met:false});
-  else if(!anyB)conds.push({text:`Alignment met — wait for B&R Engine entry signal`,met:true});
+  if(rawBlockers.CHOP_EXT)  conds.push({text:'CHOP Extreme must clear (85+ → below 70)',met:false});
+  if(rawBlockers.HTF_LONG && dir==='LONG')  conds.push({text:'HTF rejection above must resolve (acceptance on bar close)',met:false});
+  if(rawBlockers.HTF_SHORT && dir==='SHORT') conds.push({text:'HTF rejection below must resolve (acceptance on bar close)',met:false});
+  if(rawBlockers.EXHAUST)   conds.push({text:'Trend exhaustion to reset (new momentum leg needed)',met:false});
+  if(rawBlockers.CHOP_HIGH && dirPts < RESTRICTED_THRESHOLD) conds.push({text:'CHOP elevated — acceptable, but favor confirmed retests only',met:true});
+  if(rawBlockers.TRAP)      conds.push({text:'Trap % elevated — wait for initiative buyer/seller confirmation',met:false});
+  if(rawBlockers.CVD_DIV)   conds.push({text:'CVD divergence — require retest + bar close confirmation',met:false});
 
-  if(ls<67&&ss<67&&!anyB){
-    if(state['MBA']?.bias==='NEUTRAL')conds.push({text:'Market Breadth to shift off neutral',met:false});
-    if(!state['CVD']||state['CVD']?.bias==='NEUTRAL')conds.push({text:'CVD to confirm '+dir+' direction (delta slope)',met:false});
-  }
+  const needed=4-aligned;
+  if(needed>0) conds.push({text:`${aligned}/6 aligned — need ${needed} more indicator(s) to qualify`,met:false});
+  else if(dirPts===0) conds.push({text:'All conditions met — wait for B&R Engine entry signal',met:true});
+  else if(dirPts<BLOCK_THRESHOLD) conds.push({text:'Alignment met with minor flags — B&R entry valid with confirmation',met:true});
 
-  if(!anyB&&(ls>=67||ss>=67)){
-    conds.push({text:'Wait for retest of key level (VAH/POC/VAL/PDH/PDL)',met:false});
+  if(!rawBlockers.CHOP_EXT && !rawBlockers.HTF_LONG && !rawBlockers.HTF_SHORT && (ls>=67||ss>=67)){
+    conds.push({text:'Wait for retest of key level (PDH/PDL/VAH/POC/VAL)',met:false});
     conds.push({text:'Confirm retest hold on bar close',met:false});
-    conds.push({text:'B&R Engine entry signal required',met:false});
   }
-
-  if(!conds.length)conds.push({text:'All conditions met — monitor for entry trigger',met:true});
+  if(!conds.length) conds.push({text:'All conditions met — execute on B&R trigger',met:true});
 
   conds.forEach((c,i)=>{
-    const el=document.createElement('div');
-    el.className='cond-item';
+    const el=document.createElement('div'); el.className='cond-item';
     el.innerHTML=`<span class="cond-num">${i+1}.</span><div class="cond-dot ${c.met?'met':'pending'}"></div><span class="cond-text ${c.met?'met-text':''}">${c.text}</span>`;
     container.appendChild(el);
   });
 }
 
-function renderLadder(hasSigs,dominant,anyB,ls,ss,blockers,state){
+function renderLadder(hasSigs,dominant,permState,ls,ss,rawBlockers,state){
+  const anyHardBlock = permState==='BLOCKED';
   const steps=[
-    {label:'Bias Established',    check:hasSigs&&dominant!=='NEUTRAL'},
-    {label:'Structure Identified', check:hasSigs&&!!state['BR_ENGINE']&&state['BR_ENGINE']?.bias!=='NEUTRAL'},
-    {label:'Context Aligned',      check:hasSigs&&!!state['MBA']&&state['MBA']?.bias!=='NEUTRAL'},
-    {label:'Flow Confirmed',       check:hasSigs&&!!state['CVD']&&state['CVD']?.bias!=='NEUTRAL'&&!state['CVD']?.divergence},
-    {label:'Entry Confirmed',      check:ls>=67||ss>=67},
-    {label:'Risk Acceptable',      check:!anyB},
-    {label:'Trade Allowed',        check:(ls>=67||ss>=67)&&!anyB},
+    {label:'Bias Established',     check:hasSigs&&dominant!=='NEUTRAL'},
+    {label:'Structure Identified',  check:hasSigs&&!!state['BR_ENGINE']&&state['BR_ENGINE']?.bias!=='NEUTRAL'},
+    {label:'Context Aligned',       check:hasSigs&&!!state['MBA']&&state['MBA']?.bias!=='NEUTRAL'},
+    {label:'Flow Confirmed',        check:hasSigs&&!!state['CVD']&&state['CVD']?.bias!=='NEUTRAL'&&!state['CVD']?.divergence},
+    {label:'Entry Confirmed',       check:ls>=67||ss>=67},
+    {label:'Risk Acceptable',       check:!anyHardBlock},
+    {label:'Trade Allowed',         check:(ls>=67||ss>=67)&&!anyHardBlock},
   ];
-
   const ladder=document.getElementById('ladder-list');
   ladder.innerHTML='';
   let firstFail=-1;
-
   steps.forEach((s,i)=>{
     const el=document.createElement('div');
-    const failed=!s.check&&(firstFail===-1);
-    if(failed&&!s.check&&i>0&&steps[i-1].check)firstFail=i;
+    if(!s.check && firstFail===-1 && (i===0||steps[i-1].check)) firstFail=i;
     const st=!hasSigs?'pending':s.check?'passed':firstFail===i?'active':'pending';
     const iconCls={passed:'li-passed',active:'li-active',failed:'li-failed',pending:'li-pending'}[st];
     const icon={passed:'✓',active:'→',failed:'✕',pending:i+1}[st];
@@ -1225,53 +1444,62 @@ function renderLadder(hasSigs,dominant,anyB,ls,ss,blockers,state){
 
 function renderPhase(state,dominant){
   const phases=['phase-break','phase-retest','phase-accept','phase-expand'];
-  phases.forEach(p=>{ const el=document.getElementById(p); if(el){el.className='phase-step';} });
-
+  phases.forEach(p=>{const el=document.getElementById(p);if(el)el.className='phase-step';});
   const br=state['BR_ENGINE'];
-  if(!br){return;}
-
+  if(!br)return;
   let activePhase='phase-break';
-  if(br.bias!=='NEUTRAL'&&br.bias)activePhase='phase-break';
-  if(state['VAF']?.bias===br.bias)activePhase='phase-retest';
-  if(state['VPS']?.bias===br.bias&&!state['VPS']?.trap_triggered)activePhase='phase-accept';
-  if((dominant==='LONG'&&br.bias==='BULL'||dominant==='SHORT'&&br.bias==='BEAR')&&state['PTEA']?.bias===br.bias)activePhase='phase-expand';
-
+  if(br.bias!=='NEUTRAL'&&br.bias) activePhase='phase-break';
+  if(state['VAF']?.bias===br.bias) activePhase='phase-retest';
+  if(state['VPS']?.bias===br.bias&&!state['VPS']?.trap_triggered) activePhase='phase-accept';
+  if((dominant==='LONG'&&br.bias==='BULL'||dominant==='SHORT'&&br.bias==='BEAR')&&state['PTEA']?.bias===br.bias) activePhase='phase-expand';
   const idx=phases.indexOf(activePhase);
   phases.forEach((p,i)=>{
-    const el=document.getElementById(p);
-    if(!el)return;
+    const el=document.getElementById(p);if(!el)return;
     if(i<idx)el.className='phase-step completed';
     else if(i===idx)el.className='phase-step active';
     else el.className='phase-step';
   });
 }
 
-function getVerdict(score,hb,aligned){if(hb)return'BLOCKED';if(score>=67)return'GO';if(score>=50)return'CAUTION';if(score>0)return'WEAK';return'WAIT';}
-function renderVerdict(dir,score,hb,aligned,dominant,state){
+// V5 verdict uses per-direction points
+function getVerdict(score,dirPts,aligned){
+  if(dirPts >= BLOCK_THRESHOLD)      return 'BLOCKED';
+  if(dirPts >= RESTRICTED_THRESHOLD) return 'RESTRICTED';
+  if(score>=67)  return dirPts >= CAUTION_THRESHOLD ? 'CAUTION' : 'GO';
+  if(score>=50)  return 'CAUTION';
+  if(score>0)    return 'WEAK';
+  return 'WAIT';
+}
+
+function renderVerdict(dir,score,dirPts,aligned,dominant,state){
   const card=document.getElementById('verdict-'+dir+'-card');
   const txt=document.getElementById('verdict-'+dir);
   const trigger=document.getElementById('verdict-'+dir+'-trigger');
   const invalid=document.getElementById('verdict-'+dir+'-invalid');
-  const v=getVerdict(score,hb,aligned);
-  const dirU=dir==='long'?'LONG':'SHORT';
-  const cm={GO:'go',CAUTION:'caution',BLOCKED:'blocked',WEAK:'weak',WAIT:'weak'};
+  const v=getVerdict(score,dirPts,aligned);
+  const cm={GO:'go',CAUTION:'caution',RESTRICTED:'restricted',BLOCKED:'blocked',WEAK:'weak',WAIT:'weak'};
   card.className='verdict-card '+(cm[v]||'weak');
   txt.className='verdict-text '+(cm[v]||'weak');
   txt.textContent=v;
 
   if(v==='GO'){
-    trigger.textContent='Trigger: Wait for B&R retest + bar close confirmation';
+    trigger.textContent='Wait for B&R retest + bar close confirmation';
     invalid.textContent='Invalid: Acceptance back through key level';
   }else if(v==='BLOCKED'){
-    const activeB=Object.entries({'TRAP':state['VPS']?.trap_triggered,'HTF':state['VPS']?.htf_rejected,'CHOP':state['VPS']?.chop_triggered}).filter(([,v])=>v).map(([k])=>k);
-    trigger.textContent='Blocked by: '+activeB.join(', ');
-    invalid.textContent='Wait for blocker(s) to clear before reassessing';
+    trigger.textContent=dirPts+'pt blocker stack — stand down';
+    invalid.textContent='Wait for blockers to clear before reassessing';
+  }else if(v==='RESTRICTED'){
+    trigger.textContent=dirPts+'pts — trade with 50% size + confirmation';
+    invalid.textContent='CVD + level hold both required before entry';
   }else if(v==='CAUTION'){
-    trigger.textContent='Trigger: '+aligned+'/6 aligned — wait for full confluence';
+    trigger.textContent='Valid entry — confirm retest bar close';
+    invalid.textContent='Minor flags present — do not force impulsive entry';
+  }else if(v==='CAUTION'&&score<67){
+    trigger.textContent=aligned+'/6 aligned — wait for full confluence';
     invalid.textContent='Do not force — partial setups carry elevated risk';
   }else{
     trigger.textContent='Need: '+(4-aligned)+' more indicators to qualify';
-    invalid.textContent='Monitor for '+dirU+' alignment building';
+    invalid.textContent='Monitor for '+(dir==='long'?'LONG':'SHORT')+' alignment building';
   }
 }
 
@@ -1286,7 +1514,6 @@ function triggerGO(dir){
 async function triggerAnalysis(){
   const state=getState();
   if(!Object.keys(state).filter(k=>INDICATORS.includes(k)).length)return;
-
   const now=new Date();
   const et=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
   const [h,m]=et.split(':').map(Number); const tot=h*60+m;
@@ -1300,13 +1527,19 @@ async function triggerAnalysis(){
   const bull=Object.values(signals).filter(v=>v==='BULL').length;
   const bear=Object.values(signals).filter(v=>v==='BEAR').length;
   const ls=Math.round(bull*WEIGHT), ss=Math.round(bear*WEIGHT);
-  const blockers={TRAP:!!state['VPS']?.trap_triggered,HTF:!!state['VPS']?.htf_rejected,CHOP:!!state['VPS']?.chop_triggered,EXHAUST:!!state['PTEA']?.exhaust_triggered,CVD_DIV:!!state['CVD']?.divergence};
-  const anyB=Object.values(blockers).some(Boolean);
   const dominant=bull>bear?'LONG':bear>bull?'SHORT':'NEUTRAL';
   const ticker=state._ticker||activeTicker;
   const tfL=activeTF==='60'?'1H':activeTF+'M';
 
-  const key=JSON.stringify({bull,bear,blockers,sess,ticker,tf:activeTF});
+  // compute blockers for AI context
+  const rawB={HTF_LONG:!!state['VPS']?.htf_rejected_long,HTF_SHORT:!!state['VPS']?.htf_rejected_short,CHOP_EXT:false,CHOP_HIGH:false,EXHAUST:!!state['PTEA']?.exhaust_triggered,TRAP:!!state['VPS']?.trap_triggered,CVD_DIV:!!state['CVD']?.divergence};
+  if(state['VPS']?.chop_score!=null){const cs=parseFloat(state['VPS'].chop_score);if(cs>=85)rawB.CHOP_EXT=true;else if(cs>=70)rawB.CHOP_HIGH=true;}
+  else if(state['VPS']?.chop_triggered)rawB.CHOP_HIGH=true;
+  const {longPts,shortPts}=computeBlockerScore(rawB,dominant);
+  const dirPts=dominant==='LONG'?longPts:dominant==='SHORT'?shortPts:Math.max(longPts,shortPts);
+  const permState=getPermission(longPts,shortPts,ls,ss,dominant);
+
+  const key=JSON.stringify({bull,bear,rawB,sess,ticker,tf:activeTF});
   if(key===lastAIKey)return;
   lastAIKey=key;
 
@@ -1322,10 +1555,10 @@ async function triggerAnalysis(){
   const system=`You are a prop desk execution analyst for Prolific Trading Indicators. Your job is to give futures traders immediate, actionable commentary. Be direct, specific, confident. No disclaimers. No "I think." Speak like a senior trader talking to another trader. Max 3 sentences.`;
   const user=`Confluence reading on ${ticker} ${tfL} — ${sess} session (${et} ET):
 Long: ${ls}/100 (${bull}/6 bull) | Short: ${ss}/100 (${bear}/6 bear) | Dominant: ${dominant}
+Permission state: ${permState} (${dirPts}pt blocker stack)
 Indicators: ${Object.entries(signals).map(([k,v])=>IND_LABELS[k]+': '+(v||'NO DATA')).join(' | ')}
-Blockers: ${anyB?Object.entries(blockers).filter(([,v])=>v).map(([k])=>k.replace('_',' ')).join(', '):'None'}
-CVD Divergence: ${blockers.CVD_DIV?'YES':'No'} | HTF: ${blockers.HTF?'REJECTED':'Clear'} | Trap: ${blockers.TRAP?'ACTIVE':'Clear'}
-Tell me what this confluence means for ${ticker} right now and what I should be watching for. Be specific about level behavior or bias direction.`;
+Active blockers: ${Object.entries(rawB).filter(([,v])=>v).map(([k])=>k.replace('_',' ')).join(', ')||'None'}
+Tell me what this means for ${ticker} right now and what to watch for. Be specific.`;
 
   try{
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
@@ -1351,7 +1584,7 @@ Tell me what this confluence means for ${ticker} right now and what I should be 
     aiDot.className='ai-dot ready'; aiStatus.textContent='Ready';
   }catch(err){
     if(err.name==='AbortError')return;
-    aiEl.className='ai-content'; aiEl.textContent='AI commentary unavailable.';
+    aiEl.className='ai-content'; aiEl.textContent='AI commentary unavailable — rules analysis above is accurate.';
     aiDot.className='ai-dot'; aiStatus.textContent='Offline';
   }
 }
@@ -1415,14 +1648,14 @@ function switchTab(n){
 // ══════════════ DEMO ══════════════
 function loadDemo(){
   const d=[
-    {source:'BR_ENGINE',bias:'BULL',blocker:false,ticker:'ES1!',tf:'5'},
-    {source:'VPS',bias:'BULL',blocker:false,trap_triggered:false,ticker:'ES1!',tf:'5'},
-    {source:'VAF',bias:'BULL',blocker:false,ticker:'ES1!',tf:'5'},
-    {source:'MBA',bias:'NEUTRAL',blocker:false,ticker:'ES1!',tf:'5'},
-    {source:'PTEA',bias:'BULL',blocker:false,exhaust_triggered:false,ticker:'ES1!',tf:'5'},
-    {source:'CVD',bias:'BEAR',blocker:false,divergence:false,ticker:'ES1!',tf:'5'},
-    {source:'BR_ENGINE',event:'ENTRY',direction:'LONG',ticker:'ES1!',tf:'5',trade_id:'DEMO-001',level_type:'PDH',entry_price:5580.25,stop_price:5576.00,tp1_price:5586.50,tp2_price:5592.75,tp3_price:5600.00,a_plus_score:82.5},
-    {source:'BR_ENGINE',event:'TP1',direction:'LONG',ticker:'ES1!',tf:'5',trade_id:'DEMO-001',exit_price:5586.50}
+    {source:'BR_ENGINE',bias:'BULL',blocker:false,ticker:'ES1!',tf:'1'},
+    {source:'VPS',bias:'BULL',blocker:false,trap_triggered:false,chop_score:65,htf_rejected_long:false,htf_rejected_short:false,ticker:'ES1!',tf:'1'},
+    {source:'VAF',bias:'BULL',blocker:false,ticker:'ES1!',tf:'1'},
+    {source:'MBA',bias:'NEUTRAL',blocker:false,ticker:'ES1!',tf:'1'},
+    {source:'PTEA',bias:'BULL',blocker:false,exhaust_triggered:false,ticker:'ES1!',tf:'1'},
+    {source:'CVD',bias:'BEAR',blocker:false,divergence:false,ticker:'ES1!',tf:'1'},
+    {source:'BR_ENGINE',event:'ENTRY',direction:'LONG',ticker:'ES1!',tf:'1',trade_id:'DEMO-001',level_type:'PDH',entry_price:5580.25,stop_price:5576.00,tp1_price:5586.50,tp2_price:5592.75,tp3_price:5600.00,a_plus_score:82.5},
+    {source:'BR_ENGINE',event:'TP1',direction:'LONG',ticker:'ES1!',tf:'1',trade_id:'DEMO-001',exit_price:5586.50}
   ];
   let i=0; function nx(){if(i<d.length){processWebhook(d[i++]);setTimeout(nx,350);}} setTimeout(nx,700);
 }
