@@ -1281,7 +1281,7 @@ Give 2 sentences: what this confluence means right now and what the trader shoul
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,stream:true,system,messages:[{role:'user',content:user}]}),
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:120,stream:true,system,messages:[{role:'user',content:user}]}),
       signal:aiAbort.signal
     });
     if(!resp.ok)throw new Error('API '+resp.status);
