@@ -520,8 +520,8 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
         <div class="blocker-right"><span class="bl-sev-tag critical" id="btag-HTF">CRITICAL</span><span class="blocker-status clear" id="bstat-HTF">CLEAR</span></div>
       </div>
       <div class="blocker-row" id="brow-CHOP">
-        <div class="blocker-left"><div class="bl-sev-dot major"></div><span class="blocker-name">CHOP Score</span></div>
-        <div class="blocker-right"><span class="bl-sev-tag major" id="btag-CHOP">MAJOR</span><span class="blocker-status clear" id="bstat-CHOP">CLEAR</span></div>
+        <div class="blocker-left"><div class="bl-sev-dot minor"></div><span class="blocker-name">CHOP Score</span></div>
+        <div class="blocker-right"><span class="bl-sev-tag minor" id="btag-CHOP">MINOR</span><span class="blocker-status clear" id="bstat-CHOP">CLEAR</span></div>
       </div>
       <div class="blocker-row" id="brow-EXHAUST">
         <div class="blocker-left"><div class="bl-sev-dot major"></div><span class="blocker-name">Trend Exhaustion</span></div>
@@ -609,7 +609,7 @@ const LADDER_DEF=[
   {id:'entry',label:'Entry Confirmed'},
   {id:'risk',label:'Risk Acceptable'},
 ];
-const BLOCKER_SEV={TRAP:'critical',HTF:'critical',CHOP:'major',EXHAUST:'major',CVD_DIV:'minor'};
+const BLOCKER_SEV={TRAP:'critical',HTF:'critical',CHOP:'minor',EXHAUST:'major',CVD_DIV:'minor'};
 const BLOCKER_NAMES={TRAP:'Trap % High',HTF:'HTF Rejection',CHOP:'CHOP Score',EXHAUST:'Trend Exhaustion',CVD_DIV:'CVD Divergence'};
 
 // ══ STATE ══
@@ -720,6 +720,7 @@ function fetchTradeStatus(){
         if(sc!==null)existing.a_plus_score=sc;existing._ts=tsTime;
         if(r.vpe_trap_pct!=null&&r.vpe_trap_pct!=='')existing.vpe_trap_pct=Number(r.vpe_trap_pct);
         if(r.cvd_bias)existing.cvd_bias=String(r.cvd_bias);
+        if(r.level_type)existing.level_type=String(r.level_type);
         if(uiStatus!=='open')delete openTrades[id];
         const stateChanged=(prev.s!==existing.status||prev.t1!==tp1||prev.t2!==tp2||prev.t3!==tp3);
         if(stateChanged){
@@ -730,7 +731,7 @@ function fetchTradeStatus(){
           else if(uiStatus==='closed-loss'&&prevStatus!=='closed-loss')playSound('sl');
         }
       }else{
-        const vpeVal=r.vpe_trap_pct!=null&&r.vpe_trap_pct!==''?Number(r.vpe_trap_pct):null;const trade={_id:id,id,direction:dir,ticker:String(r.ticker||'ES1!'),level_type:'',entry_price:r.entry_price||'',stop_price:r.stop_price||'',tp1_price:r.tp1_price||'',tp2_price:r.tp2_price||'',tp3_price:r.tp3_price||'',a_plus_score:sc,vpe_trap_pct:vpeVal,cvd_bias:String(r.cvd_bias||''),hit_tp1:tp1,hit_tp2:tp2,hit_tp3:tp3,status:uiStatus,exit_price:r.exit_price||'',_ts:tsTime,_fromSheets:true};
+        const vpeVal=r.vpe_trap_pct!=null&&r.vpe_trap_pct!==''?Number(r.vpe_trap_pct):null;const trade={_id:id,id,direction:dir,ticker:String(r.ticker||'ES1!'),level_type:String(r.level_type||''),entry_price:r.entry_price||'',stop_price:r.stop_price||'',tp1_price:r.tp1_price||'',tp2_price:r.tp2_price||'',tp3_price:r.tp3_price||'',a_plus_score:sc,vpe_trap_pct:vpeVal,cvd_bias:String(r.cvd_bias||''),hit_tp1:tp1,hit_tp2:tp2,hit_tp3:tp3,status:uiStatus,exit_price:r.exit_price||'',_ts:tsTime,_fromSheets:true};
         tradeFeed.unshift(trade);if(uiStatus==='open')openTrades[id]=trade;changed=true;
         if(uiStatus==='open')playSound('entry');
       }
