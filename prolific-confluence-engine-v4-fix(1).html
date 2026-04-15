@@ -260,7 +260,7 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .log-meta{font-family:var(--mono);font-size:7px;letter-spacing:0.07em;color:var(--text-dim);text-transform:uppercase}
 
 /* Trade Cards */
-.trade-card{margin:6px 8px;border:1px solid var(--border);background:var(--bg);position:relative;overflow:hidden;opacity:0;animation:log-in 0.3s forwards}
+.trade-card{margin:6px 8px;border:1px solid var(--border);background:var(--bg2);position:relative;overflow:hidden;opacity:0;animation:log-in 0.3s forwards;min-height:80px}
 .trade-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .trade-card.open::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .trade-card.closed-win::before{background:linear-gradient(90deg,transparent,var(--green-lt),transparent)}
@@ -276,18 +276,18 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .hit-tp .lvl-check{color:#00c864;font-weight:900;}
 .hit-sl .lvl-check{color:#ff5050;font-weight:900;}
 .tc-hdr{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--border)}
-.tc-dir{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+.tc-dir{font-family:var(--cond);font-size:15px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase}
 .tc-dir.long{color:var(--green-lt)}.tc-dir.short{color:var(--red-lt)}
 .tc-meta{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
 .tc-sym{font-family:var(--mono);font-size:8px;color:var(--gold);letter-spacing:0.1em}
 .tc-ts{font-family:var(--mono);font-size:7px;color:var(--muted)}
 .sheets-badge{font-family:var(--mono);font-size:6px;color:var(--muted);padding:0 3px;border:1px solid var(--border);margin-left:3px;opacity:0.6;letter-spacing:0.08em}
 .tc-levels{padding:5px 10px;display:flex;flex-direction:column;gap:2px}
-.tc-lvl{display:flex;align-items:center;gap:6px;padding:2px 5px;border-left:2px solid var(--border);transition:all 0.4s}
+.tc-lvl{display:flex;align-items:center;gap:8px;padding:3px 6px;border-left:2px solid var(--border);transition:all 0.4s}
 .tc-lvl.hit-tp{border-left-color:var(--green-lt);background:rgba(52,217,122,0.05)}
 .tc-lvl.hit-sl{border-left-color:var(--red-lt);background:rgba(255,85,85,0.05)}
-.lvl-label{font-family:var(--mono);font-size:7px;letter-spacing:0.1em;color:var(--muted);text-transform:uppercase;width:28px;flex-shrink:0}
-.lvl-price{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--text-dim);flex:1;transition:color 0.4s}
+.lvl-label{font-family:var(--mono);font-size:8px;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase;width:32px;flex-shrink:0}
+.lvl-price{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--text);flex:1;transition:color 0.4s}
 .tc-lvl.hit-tp .lvl-price{color:var(--green-lt)}.tc-lvl.hit-sl .lvl-price{color:var(--red-lt)}
 .lvl-check{font-size:8px}
 .tc-lvl.hit-tp .lvl-check{color:var(--green-lt)}.tc-lvl.hit-sl .lvl-check{color:var(--red-lt)}
@@ -621,7 +621,7 @@ let prevLongV='', prevShortV='';
 let ws=null, wsRetries=0, MAX_RETRIES=5, audioCtx=null;
 let aiAbort=null, lastCtxKey='';
 
-try{const s=localStorage.getItem('pce_v4_tf');if(s)tfState=JSON.parse(s);const t=localStorage.getItem('pce_v4_tr');if(t)tradeFeed=JSON.parse(t);const o=localStorage.getItem('pce_v4_op');if(o)openTrades=JSON.parse(o);const f=localStorage.getItem('pce_v4_f');if(f){tickerFilter=f;applyFilterUI(f);}}catch(e){}
+try{const s=localStorage.getItem('pce_v4_tf');if(s)tfState=JSON.parse(s);const t=localStorage.getItem('pce_v4_tr');if(t){const raw=JSON.parse(t);tradeFeed=raw.filter(x=>x.entry_price!=null&&x.entry_price!==''&&x.entry_price!==undefined);}const o=localStorage.getItem('pce_v4_op');if(o){const rawO=JSON.parse(o);Object.keys(rawO).forEach(k=>{if(rawO[k].entry_price!=null&&rawO[k].entry_price!=='')openTrades[k]=rawO[k];});}const f=localStorage.getItem('pce_v4_f');if(f){tickerFilter=f;applyFilterUI(f);}}catch(e){}
 
 // Build ladder HTML
 (function buildLadder(){
