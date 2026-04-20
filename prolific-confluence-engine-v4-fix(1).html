@@ -667,7 +667,7 @@ const LADDER_DEF=[
   {id:'entry',label:'Entry Confirmed'},
   {id:'risk',label:'Risk Acceptable'},
 ];
-const BLOCKER_SEV={TRAP:'critical',HTF:'critical',CHOP:'major',EXHAUST:'major',CVD_DIV:'minor'};
+const BLOCKER_SEV={TRAP:'critical',HTF:'critical',CHOP:'minor',EXHAUST:'major',CVD_DIV:'minor'};
 const BLOCKER_NAMES={TRAP:'Trap % High',HTF:'HTF Rejection',CHOP:'CHOP Score',EXHAUST:'Trend Exhaustion',CVD_DIV:'CVD Divergence'};
 
 // ══ STATE ══
@@ -1143,7 +1143,7 @@ async function triggerAnalysis(){
   const sys='You are a professional futures trading analyst inside the Prolific Confluence Engine. Give sharp, direct 2-sentence commentary. Senior trader voice: specific, no hedging, no disclaimers. Reference ticker and TF.';
   const msg=`${ticker} ${tfLabel} — ${sess}: ${bull} BULL, ${bear} BEAR | Long:${ls}/100 Short:${ss}/100 | ${dominant} bias${hb?' | BLOCKERS: '+blockerList.join(', '):''}${conflicts.length?' | Conflicts: '+conflicts.map(i=>LABELS_MAP[i]).join(', '):''}\nState: ${INDS.map(i=>LABELS_MAP[i]+':'+(state[i]&&matchesTicker(state[i]?.ticker)?state[i].bias:'NO DATA')).join(' | ')}\nGive 2 sentences: what this confluence means now and what to watch next.`;
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,stream:true,system:sys,messages:[{role:'user',content:msg}]}),signal:aiAbort.signal});
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:120,stream:true,system:sys,messages:[{role:'user',content:msg}]}),signal:aiAbort.signal});
     if(!resp.ok)throw new Error('API '+resp.status);
     if(aiEl){aiEl.className='ai-text';aiEl.innerHTML='<span class="ai-cursor"></span>';}
     let text='';const reader=resp.body.getReader(),decoder=new TextDecoder();
