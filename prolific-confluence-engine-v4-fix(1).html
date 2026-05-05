@@ -618,7 +618,8 @@ const WEIGHTS={BR_ENGINE:30,CVD:20,VPS:20,VAF:12,PTEA:10,MBA:8};
 const WEIGHT=100/INDS.length; // legacy fallback for any code path that still references equal weight
 
 const ARC_C=2*Math.PI*27;
-const STALE_BARS=5; // v5: stale threshold is now TF-aware (5 bars worth of minutes)
+const STALE_BARS=15; // v5.1: stale = max(15 bars * tfMin, 10min floor). Was 5 bars which falsely flagged indicators that simply hadn't had reason to refire.
+const STALE_FLOOR_MS=10*60000; // v5.1: 10-minute minimum so 1m charts don't stale-flag at 5min
 
 const SHEETS_API='https://script.google.com/macros/s/AKfycbxaxkkWYc0lU5RiWGPh7DsosX-HewuqgTL6IO-QsfNlEQQO1zZnDwkmXFs_6BhtJlbZIw/exec';
 const LADDER_DEF=[
@@ -741,9 +742,9 @@ setInterval(updateClock,1000);updateClock();
 
 function checkStale(){
   const now=Date.now();
-  // v5: stale threshold is now 5 bars * activeTF minutes. Was hardcoded 10min which was way too long for 1m charts.
+  // v5.1: stale = max(STALE_BARS * tfMin, STALE_FLOOR_MS). Was too aggressive on 1m.
   const tfMin=activeTF==='60'?60:parseInt(activeTF,10)||5;
-  const staleMs=STALE_BARS*tfMin*60000;
+  const staleMs=Math.max(STALE_BARS*tfMin*60000,STALE_FLOOR_MS);
   INDS.forEach(ind=>{
     const d=getState()[ind],el=document.getElementById('stale-'+ind);
     if(!el)return;
@@ -1137,9 +1138,9 @@ function buildDrivers(bull,bear,hb,dominant,blockers,state,crit,maj){
     INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&state[i].bias!==(dir==='BULL'?'BEAR':'BULL')&&state[i].bias!==dir).forEach(i=>reasons.push({text:LABELS_MAP[i]+' neutral — watch for alignment',sev:'minor',type:'watch'}));
     INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&((dir==='BULL'&&state[i].bias==='BEAR')||(dir==='BEAR'&&state[i].bias==='BULL'))).forEach(i=>reasons.push({text:LABELS_MAP[i]+' conflicting with '+dominant+' bias (w:'+(WEIGHTS[i]||WEIGHT)+'%)',sev:'major',type:'conflict'}));
   }
-  // v5: TF-aware stale check
+  // v5.1: TF-aware stale check with 10-min floor
   const tfMin=activeTF==='60'?60:parseInt(activeTF,10)||5;
-  const staleMs=STALE_BARS*tfMin*60000;
+  const staleMs=Math.max(STALE_BARS*tfMin*60000,STALE_FLOOR_MS);
   const stale=INDS.filter(i=>{const d=state[i];return!d||!d._epoch||(Date.now()-d._epoch)>staleMs;});
   if(stale.length)reasons.push({text:stale.length+' indicator'+(stale.length>1?'s':'')+' stale — data may be outdated',sev:'minor',type:'warn'});
   if(bull===0&&bear===0)reasons.push({text:'No indicator readings — connect alerts',sev:'minor',type:'warn'});
