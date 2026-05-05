@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PROLIFIC · CONFLUENCE ENGINE</title>
+<title>PROLIFIC · CONFLUENCE ENGINE V5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -95,6 +95,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 .bias-badge.blocked{color:var(--red-lt);background:var(--red-dim);border-color:var(--red-lt);animation:blocker-pulse 1.2s infinite}
 @keyframes blocker-pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,85,85,0.4)}50%{box-shadow:0 0 0 3px rgba(255,85,85,0)}}
 .ind-time{font-family:var(--mono);font-size:7px;color:var(--muted)}
+
+/* ── v5: PRIME_ELITE / SWEEP / SESSION QUALITY ── */
+.elite-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.16em;padding:2px 7px;background:linear-gradient(90deg,#c9a84c,#e8cc7a);color:#06080c;text-transform:uppercase;border:1px solid #e8cc7a;animation:elite-pulse 1.6s infinite}
+@keyframes elite-pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,204,122,0.6)}50%{box-shadow:0 0 0 6px rgba(232,204,122,0)}}
+.sweep-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:0.14em;padding:2px 6px;background:#7b2dff;color:#fff;text-transform:uppercase;border:1px solid #a47bff}
+.sess-quality{font-family:var(--mono);font-size:7px;letter-spacing:0.14em;padding:1px 6px;border:1px solid;text-transform:uppercase;margin-left:6px}
+.sess-quality.boost{color:var(--green-lt);border-color:rgba(52,217,122,0.4);background:var(--green-dim)}
+.sess-quality.chill{color:var(--amber);border-color:rgba(224,148,48,0.4);background:var(--amber-dim)}
+.sess-quality.std{color:var(--muted);border-color:var(--border)}
+.tc-elite{padding:5px 10px;background:rgba(201,168,76,0.06);border-bottom:1px solid var(--border);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.weighted-tag{font-family:var(--mono);font-size:7px;color:var(--gold-dim);letter-spacing:0.1em}
 
 /* ── CENTER PANEL ── */
 .center-panel{background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
@@ -330,75 +341,17 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 @keyframes go-flash-anim{0%{opacity:1}100%{opacity:0}}
 .go-flash.fire{animation:go-flash-anim 0.8s ease-out forwards}
 .empty-state{padding:16px 12px;font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;line-height:2}
-
-/* ── TRADE ALERT OVERLAY ── */
-.trade-alert-overlay{position:fixed;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,0.15) 0%,rgba(6,8,12,0.92) 70%);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(6px);user-select:none}
-.trade-alert-overlay.open{display:flex;animation:overlay-fade-in 0.3s ease-out}
-@keyframes overlay-fade-in{from{opacity:0}to{opacity:1}}
-.trade-alert-card{width:min(560px,90vw);background:linear-gradient(135deg,var(--bg2) 0%,var(--bg3) 100%);border:2px solid var(--gold);position:relative;padding:36px 40px;box-shadow:0 0 60px rgba(201,168,76,0.35),0 0 120px rgba(201,168,76,0.2),inset 0 0 40px rgba(201,168,76,0.06);animation:alert-pulse 2.2s ease-in-out infinite}
-@keyframes alert-pulse{0%,100%{box-shadow:0 0 60px rgba(201,168,76,0.35),0 0 120px rgba(201,168,76,0.2),inset 0 0 40px rgba(201,168,76,0.06)}50%{box-shadow:0 0 90px rgba(201,168,76,0.55),0 0 180px rgba(201,168,76,0.32),inset 0 0 60px rgba(201,168,76,0.12)}}
-.trade-alert-card::before{content:'';position:absolute;inset:-1px;background:linear-gradient(135deg,transparent 0%,var(--gold) 50%,transparent 100%);z-index:-1;opacity:0.6;animation:alert-shimmer 3s linear infinite}
-@keyframes alert-shimmer{0%{transform:translateX(-100%) rotate(0deg)}100%{transform:translateX(100%) rotate(0deg)}}
-.trade-alert-close{position:absolute;top:12px;right:12px;width:28px;height:28px;background:transparent;border:1px solid var(--border2);color:var(--gold);cursor:pointer;font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.trade-alert-close:hover{background:rgba(201,168,76,0.15);border-color:var(--gold)}
-.trade-alert-header{font-family:var(--mono);font-size:9px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;opacity:0.8}
-.trade-alert-title{font-family:var(--cond);font-size:46px;font-weight:800;letter-spacing:0.04em;line-height:1;margin-bottom:4px;text-transform:uppercase}
-.trade-alert-title.long{color:var(--green-lt)}
-.trade-alert-title.short{color:var(--red-lt)}
-.trade-alert-title.rearm{color:var(--gold)}
-.trade-alert-sub{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;color:var(--text-dim);text-transform:uppercase;margin-bottom:22px}
-.trade-alert-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
-.trade-alert-field{background:var(--bg);border:1px solid var(--border);padding:10px 12px}
-.trade-alert-field .lbl{font-family:var(--mono);font-size:7px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
-.trade-alert-field .val{font-family:var(--mono);font-size:15px;font-weight:600;color:var(--text);letter-spacing:0.04em}
-.trade-alert-field.entry .val{color:var(--gold-lt)}
-.trade-alert-field.sl .val{color:var(--red-lt)}
-.trade-alert-field.tp .val{color:var(--green-lt)}
-.trade-alert-field.score .val{color:var(--gold)}
-.trade-alert-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:14px;margin-top:4px}
-.trade-alert-ts{font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--muted);text-transform:uppercase}
-.trade-alert-dismiss{font-family:var(--mono);font-size:10px;letter-spacing:0.22em;color:var(--gold);text-transform:uppercase;padding:8px 20px;background:rgba(201,168,76,0.1);border:1px solid var(--gold);cursor:pointer;transition:all 0.2s}
-.trade-alert-dismiss:hover{background:rgba(201,168,76,0.25)}
-.trade-alert-queue{position:absolute;top:-10px;left:-10px;background:var(--gold);color:var(--bg);font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 8px;letter-spacing:0.1em;border-radius:0;display:none}
-.trade-alert-queue.show{display:block}
-
-/* Stat pill for ignored signals (future-proofing) */
-.stat-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 6px;font-family:var(--mono);font-size:8px;letter-spacing:0.12em;color:var(--muted);border:1px solid var(--border)}
 </style>
 </head>
 <body>
 <div class="go-flash" id="go-flash"></div>
-
-<!-- TRADE ALERT OVERLAY -->
-<div class="trade-alert-overlay" id="trade-alert-overlay">
-  <div class="trade-alert-card">
-    <div class="trade-alert-queue" id="trade-alert-queue">+0 MORE</div>
-    <button class="trade-alert-close" id="trade-alert-close" onclick="dismissTradeAlert()">✕</button>
-    <div class="trade-alert-header" id="trade-alert-header">NEW TRADE · ENTRY</div>
-    <div class="trade-alert-title" id="trade-alert-title">LONG</div>
-    <div class="trade-alert-sub" id="trade-alert-sub">ES1! · PDH · 1m</div>
-    <div class="trade-alert-grid">
-      <div class="trade-alert-field entry"><div class="lbl">Entry</div><div class="val" id="ta-entry">—</div></div>
-      <div class="trade-alert-field sl"><div class="lbl">Stop</div><div class="val" id="ta-sl">—</div></div>
-      <div class="trade-alert-field tp"><div class="lbl">TP1</div><div class="val" id="ta-tp1">—</div></div>
-      <div class="trade-alert-field tp"><div class="lbl">TP2</div><div class="val" id="ta-tp2">—</div></div>
-      <div class="trade-alert-field tp"><div class="lbl">TP3</div><div class="val" id="ta-tp3">—</div></div>
-      <div class="trade-alert-field score"><div class="lbl">A+ Score</div><div class="val" id="ta-score">—</div></div>
-    </div>
-    <div class="trade-alert-footer">
-      <span class="trade-alert-ts" id="ta-ts">—</span>
-      <button class="trade-alert-dismiss" onclick="dismissTradeAlert()">Acknowledge · Esc</button>
-    </div>
-  </div>
-</div>
-
 <div class="demo-banner" id="demo-banner">⚡ DEMO MODE — SEND WEBHOOK TO ACTIVATE</div>
 
 <!-- TOP BAR -->
 <header class="topbar">
   <div class="brand">
     <span class="brand-name">Prolific</span>
-    <span class="brand-sub">Confluence Engine V4</span>
+    <span class="brand-sub">Confluence Engine V5</span>
   </div>
   <div class="topbar-mid">
     <div class="ticker-filter-wrap">
@@ -657,7 +610,16 @@ body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradi
 <script>
 // ══ CONSTANTS ══
 const INDS=['BR_ENGINE','VPS','VAF','MBA','PTEA','CVD'];
-const WEIGHT=100/INDS.length, ARC_C=2*Math.PI*27, STALE_MINS=10;
+
+// v5: indicator weights derived from BR_2_0_JOURNAL data (Apr 16 - May 3 2026, n=319 finished trades)
+// BR_ENGINE and CVD are the strongest predictors; MBA/VAF/PTEA each individually have weak correlation.
+// Sum = 100. Tune as more data accumulates.
+const WEIGHTS={BR_ENGINE:30,CVD:20,VPS:20,VAF:12,PTEA:10,MBA:8};
+const WEIGHT=100/INDS.length; // legacy fallback for any code path that still references equal weight
+
+const ARC_C=2*Math.PI*27;
+const STALE_BARS=5; // v5: stale threshold is now TF-aware (5 bars worth of minutes)
+
 const SHEETS_API='https://script.google.com/macros/s/AKfycbxaxkkWYc0lU5RiWGPh7DsosX-HewuqgTL6IO-QsfNlEQQO1zZnDwkmXFs_6BhtJlbZIw/exec';
 const LADDER_DEF=[
   {id:'bias',label:'Bias Established'},
@@ -667,8 +629,21 @@ const LADDER_DEF=[
   {id:'entry',label:'Entry Confirmed'},
   {id:'risk',label:'Risk Acceptable'},
 ];
+// v5: CHOP demoted from 'major' to 'minor' — journal data shows higher chop correlates with HIGHER win rate (chop 26-50: 79.4% WR; chop 0: 67.3% WR). Was incorrectly blocking your best setups.
 const BLOCKER_SEV={TRAP:'critical',HTF:'critical',CHOP:'minor',EXHAUST:'major',CVD_DIV:'minor'};
 const BLOCKER_NAMES={TRAP:'Trap % High',HTF:'HTF Rejection',CHOP:'CHOP Score',EXHAUST:'Trend Exhaustion',CVD_DIV:'CVD Divergence'};
+
+// v5: hour-of-day session quality (ET). Derived from journal hour-of-day WR analysis.
+// 'boost' hours have observed WR > 80% (n>=10). 'chill' hours have observed WR < 55% (n>=10).
+const SESSION_QUALITY={
+  3:'boost',   // 92.9% WR (n=14) — overnight/early Europe
+  9:'boost',   // 89.5% WR (n=19) — RTH open
+  19:'boost',  // 81.8% WR (n=11) — post-RTH
+  11:'chill',  // 50.0% WR (n=18) — lunch chop
+  14:'chill',  // 50.0% WR (n=10) — post-lunch
+  16:'chill',  // 42.9% WR (n=7)  — close
+  18:'chill'   // 44.4% WR (n=9)  — Asia open transition
+};
 
 // ══ STATE ══
 let tfState={'1':{},'5':{},'15':{},'60':{}}, activeTF='5';
@@ -695,6 +670,63 @@ function save(){try{localStorage.setItem('pce_v4_tf',JSON.stringify(tfState));lo
 function getState(){return tfState[activeTF]||{};}
 function matchesTicker(t){return!tickerFilter||(t||'').toUpperCase()===tickerFilter;}
 
+// ══ v5: HELPERS ══
+
+// tf field arrives as int (1, 5) from VPS/CVD/MBA/PTEA/VAF and string ("1m") from BR_ENGINE.
+// Without this normalize, the same TF was being split across two state buckets.
+function tfNormalize(tf){
+  if(tf===null||tf===undefined||tf==='')return activeTF;
+  const s=String(tf).toLowerCase().replace('m','').replace('h','').trim();
+  if(s==='1d'||s==='d')return 'D';
+  return s;
+}
+
+// Compute weighted long/short scores using WEIGHTS constant. Returns {longScore, shortScore, alignedLong, alignedShort}.
+function computeWeightedScore(state){
+  let ls=0,ss=0,aL=0,aS=0;
+  INDS.forEach(ind=>{
+    const d=state[ind];
+    if(!d||!matchesTicker(d.ticker))return;
+    const w=WEIGHTS[ind]||WEIGHT;
+    if(d.bias==='BULL'){ls+=w;aL++;}
+    else if(d.bias==='BEAR'){ss+=w;aS++;}
+  });
+  return {longScore:Math.round(ls),shortScore:Math.round(ss),alignedLong:aL,alignedShort:aS};
+}
+
+// Get current ET hour for session quality lookup
+function getETHour(){
+  const et=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',hour12:false}).format(new Date());
+  return parseInt(et,10);
+}
+
+// Returns 'boost' | 'chill' | 'std' for current hour
+function currentSessionQuality(){
+  const h=getETHour();
+  return SESSION_QUALITY[h]||'std';
+}
+
+// Detect PRIME_ELITE pattern from a trade payload.
+// Journal data: vpe=0 AND chop=0 AND score>=70 → 7 wins / 9 trades = 77.8% (vs 64.6% PRIME baseline).
+// With score>=75 the cohort goes 7/8 = 87.5%. Caveat: small n; treat as hypothesis.
+function isPrimeElite(trade){
+  const vpe=trade.vpe_trap_pct;
+  const chop=trade.chop;
+  const score=trade.a_plus_score;
+  if(vpe===null||vpe===undefined||vpe==='')return false;
+  if(score===null||score===undefined||score==='')return false;
+  if(Number(vpe)!==0)return false;
+  if(chop!==null&&chop!==undefined&&chop!==''&&Number(chop)!==0)return false;
+  if(Number(score)<70)return false;
+  return true;
+}
+
+// Detect sweep_confirmed from trade payload. Journal: 4/4 wins. Rare but high-edge.
+function isSweepConfirmed(trade){
+  const s=trade.sweep_confirmed;
+  return s===true||String(s).toUpperCase()==='TRUE';
+}
+
 // ══ CLOCK ══
 function updateClock(){
   const et=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(new Date());
@@ -709,17 +741,14 @@ setInterval(updateClock,1000);updateClock();
 
 function checkStale(){
   const now=Date.now();
+  // v5: stale threshold is now 5 bars * activeTF minutes. Was hardcoded 10min which was way too long for 1m charts.
+  const tfMin=activeTF==='60'?60:parseInt(activeTF,10)||5;
+  const staleMs=STALE_BARS*tfMin*60000;
   INDS.forEach(ind=>{
     const d=getState()[ind],el=document.getElementById('stale-'+ind);
     if(!el)return;
-    el.classList.toggle('active',d&&d._epoch&&(now-d._epoch)/60000>=STALE_MINS);
+    el.classList.toggle('active',d&&d._epoch&&(now-d._epoch)>=staleMs);
   });
-  // v5: Re-evaluate LIVE/STALE label
-  try{
-    const isLive=ws&&ws.readyState===1;
-    const isDemo=wsRetries>=MAX_RETRIES;
-    setConn(isDemo?'demo':isLive?'live':'off');
-  }catch(e){}
 }
 
 // ══ TF / TABS / FILTER ══
@@ -751,15 +780,9 @@ function connectWS(){
 }
 function setConn(s){
   const dot=document.getElementById('conn-dot'),lbl=document.getElementById('conn-label');
-  const state=getState();
-  const hasAnyData=INDS.some(i=>state[i]&&state[i]._epoch);
-  const staleCount=INDS.filter(i=>{const d=state[i];return d&&d._epoch&&(Date.now()-d._epoch)>STALE_MINS*60000;}).length;
-  let effective=s;
-  if(s==='live'&&hasAnyData&&staleCount===INDS.length)effective='stale';
-  dot.className='conn-dot '+(effective==='stale'?'demo':effective);
-  const labels={live:'LIVE',demo:'DEMO',off:'OFFLINE',stale:'CONNECTED · STALE'},colors={live:'var(--green-lt)',demo:'var(--amber)',off:'var(--muted)',stale:'var(--amber)'};
-  lbl.textContent=labels[effective]||labels.off;
-  lbl.style.color=colors[effective]||colors.off;
+  dot.className='conn-dot '+s;
+  const labels={live:'LIVE',demo:'DEMO',off:'OFFLINE'},colors={live:'var(--green-lt)',demo:'var(--amber)',off:'var(--muted)'};
+  lbl.textContent=labels[s];lbl.style.color=colors[s];
 }
 
 // ══ SHEETS JSONP ══
@@ -789,6 +812,8 @@ function fetchTradeStatus(){
         existing.status=uiStatus;if(r.exit_price)existing.exit_price=r.exit_price;
         if(sc!==null)existing.a_plus_score=sc;existing._ts=tsTime;
         if(r.vpe_trap_pct!=null&&r.vpe_trap_pct!=='')existing.vpe_trap_pct=Number(r.vpe_trap_pct);
+        if(r.chop!=null&&r.chop!=='')existing.chop=Number(r.chop); // v5
+        if(r.sweep_confirmed!=null)existing.sweep_confirmed=(r.sweep_confirmed===true||String(r.sweep_confirmed).toUpperCase()==='TRUE'); // v5
         if(r.cvd_bias)existing.cvd_bias=String(r.cvd_bias);
         if(uiStatus!=='open')delete openTrades[id];
         const stateChanged=(prev.s!==existing.status||prev.t1!==tp1||prev.t2!==tp2||prev.t3!==tp3);
@@ -800,9 +825,17 @@ function fetchTradeStatus(){
           else if(uiStatus==='closed-loss'&&prevStatus!=='closed-loss')playSound('sl');
         }
       }else{
-        const vpeVal=r.vpe_trap_pct!=null&&r.vpe_trap_pct!==''?Number(r.vpe_trap_pct):null;const trade={_id:id,id,direction:dir,ticker:String(r.ticker||'ES1!'),level_type:'',entry_price:r.entry_price||'',stop_price:r.stop_price||'',tp1_price:r.tp1_price||'',tp2_price:r.tp2_price||'',tp3_price:r.tp3_price||'',a_plus_score:sc,vpe_trap_pct:vpeVal,cvd_bias:String(r.cvd_bias||''),hit_tp1:tp1,hit_tp2:tp2,hit_tp3:tp3,status:uiStatus,exit_price:r.exit_price||'',_ts:tsTime,_fromSheets:true};
+        const vpeVal=r.vpe_trap_pct!=null&&r.vpe_trap_pct!==''?Number(r.vpe_trap_pct):null;
+        // v5: capture chop and sweep_confirmed from sheets
+        const chopVal=r.chop!=null&&r.chop!==''?Number(r.chop):null;
+        const sweepVal=r.sweep_confirmed===true||String(r.sweep_confirmed).toUpperCase()==='TRUE';
+        const trade={_id:id,id,direction:dir,ticker:String(r.ticker||'ES1!'),level_type:r.level_type||'',entry_price:r.entry_price||'',stop_price:r.stop_price||'',tp1_price:r.tp1_price||'',tp2_price:r.tp2_price||'',tp3_price:r.tp3_price||'',a_plus_score:sc,vpe_trap_pct:vpeVal,chop:chopVal,cvd_bias:String(r.cvd_bias||''),sweep_confirmed:sweepVal,hit_tp1:tp1,hit_tp2:tp2,hit_tp3:tp3,status:uiStatus,exit_price:r.exit_price||'',_ts:tsTime,_fromSheets:true};
         tradeFeed.unshift(trade);if(uiStatus==='open')openTrades[id]=trade;changed=true;
-        if(uiStatus==='open')playSound('entry');
+        if(uiStatus==='open'){
+          if(isPrimeElite(trade))playSound('elite');
+          else if(isSweepConfirmed(trade))playSound('sweep');
+          else playSound('entry');
+        }
       }
     });
     if(changed){rebuildTradeLog();updateSessionStats();const at=document.querySelector('.tab-btn.active');if(!at||at.id!=='tab-trades')document.getElementById('trade-badge').classList.add('show');}
@@ -816,18 +849,10 @@ function fetchTradeStatus(){
 // ══ WEBHOOK PROCESSING ══
 function processWebhook(data){
   if(data.type==='connected')return;
-  const TEVT=['ENTRY','REARM_ENTRY','TP1','TP2','TP3','SL'];
-  // IGNORED_SIGNAL: Pine suppressed a signal because a trade was already live. Track count, don't trigger trade flow.
-  if(data.source==='BR_ENGINE'&&data.event==='IGNORED_SIGNAL'){
-    ignoredSignalCount=(ignoredSignalCount||0)+1;
-    const ise=document.getElementById('stat-ignored');
-    if(ise)ise.textContent=ignoredSignalCount;
-    save();
-    return;
-  }
+  const TEVT=['ENTRY','TP1','TP2','TP3','SL','REARM_ENTRY'];
   if(data.source==='BR_ENGINE'&&data.event&&TEVT.includes((data.event||'').toUpperCase())){processTrade(data);return;}
   if(!INDS.includes(data.source))return;
-  const wTF=data.tf?String(data.tf):activeTF;
+  const wTF=tfNormalize(data.tf); // v5: normalize tf — was splitting same indicator across buckets
   if(!tfState[wTF])tfState[wTF]={};
   const ts=new Date().toLocaleTimeString('en-US',{hour12:false,timeZone:'America/New_York'});
   tfState[wTF][data.source]={...data,_ts:ts,_epoch:Date.now()};
@@ -846,10 +871,13 @@ function processTrade(data){
   const evt=(data.event||'').toUpperCase(),id=data.trade_id||(data.ticker+'|'+data.direction+'|'+ts);
   if(evt==='ENTRY'||evt==='REARM_ENTRY'){
     if(!tradeFeed.find(function(t){return t._id===id;})){
-      const t={_id:id,id,direction:(data.direction||'').toUpperCase(),ticker:data.ticker||'—',level_type:data.level_type||'',entry_price:data.entry_price,stop_price:data.stop_price,tp1_price:data.tp1_price,tp2_price:data.tp2_price,tp3_price:data.tp3_price,a_plus_score:data.a_plus_score,vpe_trap_pct:data.vpe_trap_pct,cvd_bias:data.cvd_bias||'',hit_tp1:false,hit_tp2:false,hit_tp3:false,status:'open',_ts:ts,_event:evt,parent_trade_id:data.parent_trade_id||''};
-      openTrades[id]=t;tradeFeed.unshift(t);playSound('entry');
-      // v5: Fire full-screen trade alert overlay with gong
-      queueTradeAlert(t);
+      // v5: capture chop, sweep_confirmed, session, parent_trade_id
+      const t={_id:id,id,direction:(data.direction||'').toUpperCase(),ticker:data.ticker||'—',level_type:data.level_type||'',entry_price:data.entry_price,stop_price:data.stop_price,tp1_price:data.tp1_price,tp2_price:data.tp2_price,tp3_price:data.tp3_price,a_plus_score:data.a_plus_score,vpe_trap_pct:data.vpe_trap_pct,chop:data.chop,cvd_bias:data.cvd_bias||'',sweep_confirmed:data.sweep_confirmed,session:data.session||'',is_crt:data.is_crt,parent_trade_id:data.parent_trade_id||'',hit_tp1:false,hit_tp2:false,hit_tp3:false,status:'open',_ts:ts,_event:evt};
+      openTrades[id]=t;tradeFeed.unshift(t);
+      // v5: differentiated audio for PRIME_ELITE / SWEEP / standard entry
+      if(isPrimeElite(t))playSound('elite');
+      else if(isSweepConfirmed(t))playSound('sweep');
+      else playSound('entry');
     }
   }else{
     const trade=openTrades[id]||Object.values(openTrades).find(t=>t.ticker===data.ticker&&t.status==='open');
@@ -884,8 +912,13 @@ function clearSession(){tradeFeed=[];openTrades={};try{localStorage.removeItem('
 // ══ RENDER ALL ══
 function renderAll(){
   const state=getState();
-  let bull=0,bear=0,neutral=0,longScore=0,shortScore=0;
+  let bull=0,bear=0,neutral=0;
   const blockers={};
+
+  // v5: per-indicator weighted score replaces equal-weight loop
+  const wScore=computeWeightedScore(state);
+  let longScore=wScore.longScore;
+  let shortScore=wScore.shortScore;
 
   INDS.forEach(ind=>{
     const d=state[ind],filtered=d&&!matchesTicker(d.ticker);
@@ -895,8 +928,8 @@ function renderAll(){
       if(dot)dot.className='ind-dot neutral';return;
     }
     const bias=d.bias||'NEUTRAL',blocker=d.blocker===true;
-    if(bias==='BULL'){bull++;longScore+=WEIGHT;}
-    if(bias==='BEAR'){bear++;shortScore+=WEIGHT;}
+    if(bias==='BULL')bull++;
+    if(bias==='BEAR')bear++;
     if(bias==='NEUTRAL')neutral++;
     if(d.trap_triggered)blockers['TRAP']=true;
     if(d.chop_triggered)blockers['CHOP']=true;
@@ -907,6 +940,9 @@ function renderAll(){
       card.style.opacity='1';card.dataset.bias=bias;card.dataset.blocker=blocker;
       const badge=document.getElementById('badge-'+ind);
       badge.className='bias-badge '+(blocker?'blocked':bias.toLowerCase());
+      // v5: show weight in badge tooltip
+      const w=WEIGHTS[ind]||WEIGHT;
+      badge.title=ind+' weight: '+w+'%';
       badge.textContent=blocker?'⚠ BLOCKED':bias;
       document.getElementById('flag-'+ind).classList.toggle('active',blocker);
       document.getElementById('time-'+ind).textContent=d._ts?d._ts+' ET':'—';
@@ -917,13 +953,13 @@ function renderAll(){
     if(dot)dot.className='ind-dot '+(blocker?'blocked':bias.toLowerCase());
   });
 
-  longScore=Math.round(longScore);shortScore=Math.round(shortScore);
   setArc('long-arc',longScore,'#c9a84c');
   setArc('short-arc',shortScore,'#ff5555');
   document.getElementById('long-score').textContent=longScore;
   document.getElementById('short-score').textContent=shortScore;
-  document.getElementById('long-signals').textContent=bull+' of 6 aligned';
-  document.getElementById('short-signals').textContent=bear+' of 6 aligned';
+  // v5: weighted alignment text shows count + relative weight contribution
+  document.getElementById('long-signals').textContent=wScore.alignedLong+' aligned · '+longScore+'% weighted';
+  document.getElementById('short-signals').textContent=wScore.alignedShort+' aligned · '+shortScore+'% weighted';
   document.getElementById('signals-summary').textContent=bull+' BULL · '+bear+' BEAR · '+neutral+' NEUTRAL';
   setInterp('long',longScore);setInterp('short',shortScore);
   setScoreTags('long',longScore,state,blockers);setScoreTags('short',shortScore,state,blockers);
@@ -943,16 +979,18 @@ function renderAll(){
   document.getElementById('bf-major').textContent=maj+' Major';
   document.getElementById('bf-minor').textContent=min+' Minor';
 
-  const hb=tb>0;
-  const hbHard=crit>0||maj>0;
-  const dominant=bull>bear?'LONG':bear>bull?'SHORT':'NEUTRAL';
+  // v5: hardBlocker now only triggers on critical or major. Minor (CHOP, CVD_DIV) shows but does not block.
+  const hb=crit>0||maj>0;
+  const dominant=longScore>shortScore?'LONG':shortScore>longScore?'SHORT':'NEUTRAL';
 
   // Verdicts
-  const nL=getVerdict(longScore,hbHard),nS=getVerdict(shortScore,hbHard);
+  const nL=getVerdict(longScore,hb,bull,bear,state);
+  const nS=getVerdict(shortScore,hb,bear,bull,state);
   if(nL!==prevLongV&&nL==='GO')triggerGO('long');
   if(nS!==prevShortV&&nS==='GO')triggerGO('short');
   prevLongV=nL;prevShortV=nS;
-  renderVerdict('long',longScore,hbHard,bull,crit,maj,min);renderVerdict('short',shortScore,hbHard,bear,crit,maj,min);
+  renderVerdict('long',longScore,hb,wScore.alignedLong,state);
+  renderVerdict('short',shortScore,hb,wScore.alignedShort,state);
 
   // Permission + top badges
   updatePermission(longScore,shortScore,hb,bull,bear,dominant,state,crit,maj);
@@ -975,9 +1013,10 @@ function setArc(id,score,color){
 function setInterp(dir,score){
   const el=document.getElementById(dir+'-interp');if(!el)return;
   let text,cls;
-  if(score>=80){text='Initiative Control';cls='go';}
-  else if(score>=67){text='Qualified Setup';cls='qualified';}
-  else if(score>=50){text='Developing';cls='developing';}
+  // v5: thresholds tuned against journal data — GO at 60 (was 80), QUALIFIED at 50 (was 67), DEVELOPING at 35 (was 50)
+  if(score>=60){text='Initiative Control';cls='go';}
+  else if(score>=50){text='Qualified Setup';cls='qualified';}
+  else if(score>=35){text='Developing';cls='developing';}
   else{text='No Participation';cls='none';}
   el.textContent=text;el.className='score-interp '+cls;
 }
@@ -992,16 +1031,49 @@ function setScoreTags(dir,score,state,blockers){
   }
   if(!Object.values(blockers).some(Boolean)){const s=document.createElement('span');s.className='stag ok';s.textContent='Clear';el.appendChild(s);}
   if(vps&&matchesTicker(vps.ticker)&&!vps.trap_triggered){const s=document.createElement('span');s.className='stag ok';s.textContent='Flow ✓';el.appendChild(s);}
+  // v5: session quality tag
+  const sq=currentSessionQuality();
+  if(sq!=='std'){
+    const s=document.createElement('span');
+    s.className='sess-quality '+sq;
+    s.textContent=sq==='boost'?'⏱ HIGH-WR HOUR':'⏱ LOW-WR HOUR';
+    el.appendChild(s);
+  }
 }
 
-function getVerdict(score,hbHard){if(hbHard)return'BLOCKED';if(score>=67)return'GO';if(score>=50)return'CAUTION';if(score>0)return'WEAK';return'WAIT';}
-function renderVerdict(dir,score,hbHard,aligned,crit,maj,min){
+// v5: getVerdict now takes alignment count + state for context-aware GO threshold.
+// Journal data: BR + CVD aligned + clear blockers wins ~75-79% even at score 60.
+// Score >= 85 without sweep_confirmed underperforms — demote one tier.
+function getVerdict(score,hb,aligned,opposed,state){
+  if(hb)return'BLOCKED';
+  state=state||{};
+  const br=state['BR_ENGINE'],cvd=state['CVD'];
+  const brAligned=br&&matchesTicker(br.ticker)&&br.bias!=='NEUTRAL';
+  const cvdAligned=cvd&&matchesTicker(cvd.ticker)&&cvd.bias!=='NEUTRAL';
+  const dualAligned=brAligned&&cvdAligned&&br.bias===cvd.bias;
+  const sweep=state['BR_ENGINE']&&state['BR_ENGINE'].sweep_confirmed===true;
+  // GO threshold: 50 if dual-confirmed (BR+CVD), 60 otherwise
+  const goThreshold=dualAligned?50:60;
+  // Cap rule: if score>=80 without sweep, demote to QUALIFIED
+  if(score>=80&&!sweep)return'QUALIFIED';
+  if(score>=goThreshold)return'GO';
+  if(score>=35)return'CAUTION';
+  if(score>0)return'WEAK';
+  return'WAIT';
+}
+
+function renderVerdict(dir,score,hb,aligned,state){
   const card=document.getElementById('vcard-'+dir),txt=document.getElementById('verdict-'+dir),sub=document.getElementById('verdict-'+dir+'-sub');
-  const v=getVerdict(score,hbHard);
-  const cm={GO:'go',CAUTION:'caution',BLOCKED:'blocked',WEAK:'weak',WAIT:'weak'};
-  const blockerLabel=crit>0?crit+' critical blocker'+(crit>1?'s':'')+' — stand down':maj>0?'Major blocker active — reduce size or wait':'Blocked';
-  const softNote=(!hbHard&&min>0)?' · '+min+' minor warning':'';
-  const sm={GO:aligned+'/6 aligned '+(dir==='long'?'LONG':'SHORT')+softNote,CAUTION:'Mixed — reduce size or wait'+softNote,BLOCKED:blockerLabel,WEAK:'Insufficient confluence'+softNote,WAIT:'Awaiting signals'+softNote};
+  const v=getVerdict(score,hb,aligned,0,state);
+  const cm={GO:'go',QUALIFIED:'caution',CAUTION:'caution',BLOCKED:'blocked',WEAK:'weak',WAIT:'weak'};
+  const sm={
+    GO:aligned+' weighted-aligned '+(dir==='long'?'LONG':'SHORT'),
+    QUALIFIED:'High score, no sweep — qualified but not GO',
+    CAUTION:'Mixed — reduce size or wait',
+    BLOCKED:'Hard blocker — stand down',
+    WEAK:'Insufficient confluence',
+    WAIT:'Awaiting signals'
+  };
   card.className='vcard '+(cm[v]||'weak');txt.className='vcard-text '+(cm[v]||'weak');txt.textContent=v;sub.textContent=sm[v]||'';
 }
 
@@ -1015,18 +1087,19 @@ function updatePermission(ls,ss,hb,bull,bear,dominant,state,crit,maj){
   const el=document.getElementById('perm-main'),detail=document.getElementById('perm-detail'),chip=document.getElementById('setup-chip');
   const topPerm=document.getElementById('perm-badge-top'),topBias=document.getElementById('bias-badge-top');
   let perm,permCls,detailText;
+  // v5: thresholds match new GO=60 logic. Critical only blocks; major restricts but does not deny.
   if(hb&&crit>0){perm='BLOCKED';permCls='blocked';detailText=crit+' critical blocker'+(crit>1?'s':'')+' active — no trades';}
   else if(hb&&maj>0){perm='RESTRICTED';permCls='restricted';detailText='Major blocker active — reduce size or wait';}
-  else if(dominant!=='NEUTRAL'&&(ls>=67||ss>=67)){perm='QUALIFIED';permCls='qualified';detailText=(bull>bear?bull:bear)+'/6 indicators aligned '+dominant;}
-  else if(dominant!=='NEUTRAL'&&(ls>=50||ss>=50)){perm='RESTRICTED';permCls='restricted';detailText='Partial alignment — wait for more confluence';}
+  else if(dominant!=='NEUTRAL'&&(ls>=60||ss>=60)){perm='QUALIFIED';permCls='qualified';detailText=(bull>bear?bull:bear)+' weighted indicators aligned '+dominant;}
+  else if(dominant!=='NEUTRAL'&&(ls>=40||ss>=40)){perm='RESTRICTED';permCls='restricted';detailText='Partial alignment — wait for more confluence';}
   else if(bull===0&&bear===0){perm='WAITING';permCls='waiting';detailText='No signal data — connect TradingView alerts';}
-  else{perm='WAITING';permCls='waiting';detailText='Confluence building — '+(bull+bear)+'/6 active';}
+  else{perm='WAITING';permCls='waiting';detailText='Confluence building — '+(bull+bear)+' active';}
   el.textContent=perm;el.className='perm-main-text '+permCls;detail.textContent=detailText;
   topPerm.textContent=perm;topPerm.className='perm-badge '+permCls;
   topBias.textContent=dominant==='LONG'?'LONG BIAS':dominant==='SHORT'?'SHORT BIAS':'NEUTRAL';
   topBias.className='bias-top '+(dominant==='LONG'?'long':dominant==='SHORT'?'short':'neutral');
   const brData=state['BR_ENGINE'],hasEntry=brData&&matchesTicker(brData.ticker)&&brData.bias!=='NEUTRAL';
-  if(hasEntry&&!hb&&(ls>=50||ss>=50)){chip.textContent='B&R SETUP';chip.className='setup-chip br';}
+  if(hasEntry&&!hb&&(ls>=40||ss>=40)){chip.textContent='B&R SETUP';chip.className='setup-chip br';}
   else{chip.textContent='NO SETUP';chip.className='setup-chip none';}
 }
 
@@ -1036,8 +1109,8 @@ function updateLadder(bull,bear,hb,dominant,state,ls,ss){
     struct:!!(state['BR_ENGINE']&&matchesTicker(state['BR_ENGINE']?.ticker)),
     context:!!(state['VAF']&&matchesTicker(state['VAF']?.ticker)),
     flow:!!(state['VPS']&&matchesTicker(state['VPS']?.ticker)&&!state['VPS']?.trap_triggered),
-    entry:(ls>=67||ss>=67)&&!hb,
-    risk:!hb&&(ls>=67||ss>=67),
+    entry:(ls>=60||ss>=60)&&!hb,    // v5: GO threshold lowered from 67 to 60
+    risk:!hb&&(ls>=60||ss>=60),     // v5: matched
   };
   let passed=0;
   LADDER_DEF.forEach(step=>{
@@ -1052,36 +1125,42 @@ function updateLadder(bull,bear,hb,dominant,state,ls,ss){
 
 function buildDrivers(bull,bear,hb,dominant,blockers,state,crit,maj){
   const reasons=[];
-  const ls=Math.round(bull*WEIGHT),ss=Math.round(bear*WEIGHT);
-  const hbHard=crit>0||maj>0;
+  // v5: weighted scores rather than count*WEIGHT
+  const wScore=computeWeightedScore(state);
+  const ls=wScore.longScore,ss=wScore.shortScore;
   if(hb){
     Object.entries(blockers).forEach(([k,v])=>{if(v)reasons.push({text:BLOCKER_NAMES[k]+' active',sev:BLOCKER_SEV[k],type:'block'});});
   }
   if(dominant!=='NEUTRAL'){
     const dir=dominant==='LONG'?'BULL':'BEAR';
-    INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&state[i].bias===dir).forEach(i=>reasons.push({text:LABELS_MAP[i]+' confirming '+dominant,sev:'confirms',type:'ok'}));
+    INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&state[i].bias===dir).forEach(i=>reasons.push({text:LABELS_MAP[i]+' confirming '+dominant+' (w:'+(WEIGHTS[i]||WEIGHT)+'%)',sev:'confirms',type:'ok'}));
     INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&state[i].bias!==(dir==='BULL'?'BEAR':'BULL')&&state[i].bias!==dir).forEach(i=>reasons.push({text:LABELS_MAP[i]+' neutral — watch for alignment',sev:'minor',type:'watch'}));
-    INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&((dir==='BULL'&&state[i].bias==='BEAR')||(dir==='BEAR'&&state[i].bias==='BULL'))).forEach(i=>reasons.push({text:LABELS_MAP[i]+' conflicting with '+dominant+' bias',sev:'major',type:'conflict'}));
+    INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&((dir==='BULL'&&state[i].bias==='BEAR')||(dir==='BEAR'&&state[i].bias==='BULL'))).forEach(i=>reasons.push({text:LABELS_MAP[i]+' conflicting with '+dominant+' bias (w:'+(WEIGHTS[i]||WEIGHT)+'%)',sev:'major',type:'conflict'}));
   }
-  const stale=INDS.filter(i=>{const d=state[i];return!d||!d._epoch||(Date.now()-d._epoch)>600000;});
+  // v5: TF-aware stale check
+  const tfMin=activeTF==='60'?60:parseInt(activeTF,10)||5;
+  const staleMs=STALE_BARS*tfMin*60000;
+  const stale=INDS.filter(i=>{const d=state[i];return!d||!d._epoch||(Date.now()-d._epoch)>staleMs;});
   if(stale.length)reasons.push({text:stale.length+' indicator'+(stale.length>1?'s':'')+' stale — data may be outdated',sev:'minor',type:'warn'});
   if(bull===0&&bear===0)reasons.push({text:'No indicator readings — connect alerts',sev:'minor',type:'warn'});
 
-  const order={critical:0,major:1,block:1,conflict:2,minor:3,warn:3,watch:4,confirms:5,ok:5};
+  // v5: session quality nudge
+  const sq=currentSessionQuality();
+  if(sq==='boost')reasons.push({text:'High win-rate hour ('+getETHour()+':00 ET) — historically favorable',sev:'minor',type:'ok'});
+  else if(sq==='chill')reasons.push({text:'Low win-rate hour ('+getETHour()+':00 ET) — caution',sev:'minor',type:'warn'});
+
+  const order={critical:0,major:1,block:1,conflict:2,minor:3,watch:4,confirms:5,ok:5};
   reasons.sort((a,b)=>(order[a.type]||5)-(order[b.type]||5));
 
-  // v5 fix: when panel is "TRADE DENIED", filter to only actual denial factors (not confirms)
   const titleMap={true_block:'TRADE DENIED — Primary Reasons',true_ok:'TRADE QUALIFIED — Key Factors',false_:'Decision Drivers'};
-  const titleKey=hbHard?'true_block':(ls>=67||ss>=67)?'true_ok':'false_';
-  const displayReasons=hbHard
-    ? reasons.filter(r=>['block','conflict','warn'].includes(r.type))
-    : reasons;
+  // v5: use new GO threshold (60)
+  const titleKey=hb?'true_block':(ls>=60||ss>=60)?'true_ok':'false_';
   document.getElementById('drivers-title').textContent=titleMap[titleKey];
-  document.getElementById('drivers-count').textContent=displayReasons.slice(0,6).length+' factors';
+  document.getElementById('drivers-count').textContent=reasons.slice(0,6).length+' factors';
 
   const list=document.getElementById('drivers-list');list.innerHTML='';
-  if(!displayReasons.length){list.innerHTML='<div class="empty-state" style="padding:4px 0;font-size:8px">Waiting for signal data...</div>';return;}
-  displayReasons.slice(0,6).forEach((r,i)=>{
+  if(!reasons.length){list.innerHTML='<div class="empty-state" style="padding:4px 0;font-size:8px">Waiting for signal data...</div>';return;}
+  reasons.slice(0,6).forEach((r,i)=>{
     const cls=r.type==='ok'||r.type==='confirms'?'confirms':r.sev;
     const sevLabel=r.type==='ok'||r.type==='confirms'?'CONFIRMS':r.sev.toUpperCase();
     const row=document.createElement('div');row.className='reason-row '+cls;
@@ -1095,18 +1174,20 @@ const LABELS_MAP={BR_ENGINE:'B&R Engine',VPS:'Vol Pressure',VAF:'Value Area',MBA
 function buildActivation(bull,bear,hb,dominant,blockers,state,ls,ss){
   const conditions=[];
   if(hb){
-    Object.entries(blockers).forEach(([k,v])=>{if(v)conditions.push({text:'Clear '+BLOCKER_NAMES[k],met:false});});
+    Object.entries(blockers).forEach(([k,v])=>{if(v&&BLOCKER_SEV[k]!=='minor')conditions.push({text:'Clear '+BLOCKER_NAMES[k],met:false});}); // v5: minor blockers (CHOP, CVD_DIV) don't gate activation
   }
-  if(dominant==='NEUTRAL'||bull+bear<4){conditions.push({text:'4/6 or more indicators must align',met:bull+bear>=4});}
-  conditions.push({text:'B&R Engine must confirm direction',met:!!(state['BR_ENGINE']&&matchesTicker(state['BR_ENGINE']?.ticker)&&state['BR_ENGINE']?.bias!=='NEUTRAL')});
-  if(dominant==='LONG'&&ls<67){const n=Math.ceil((67-ls)/WEIGHT);conditions.push({text:n+' more BULL indicator'+(n>1?'s':'')+' needed for GO',met:false});}
-  if(dominant==='SHORT'&&ss<67){const n=Math.ceil((67-ss)/WEIGHT);conditions.push({text:n+' more BEAR indicator'+(n>1?'s':'')+' needed for GO',met:false});}
-  const cvd=state['CVD'];
-  if(cvd&&matchesTicker(cvd?.ticker)&&dominant!=='NEUTRAL'){
-    const needed=dominant==='LONG'?'BULL':'BEAR';
-    conditions.push({text:'CVD must align with '+dominant+' bias',met:cvd.bias===needed});
-  }
-  if(!conditions.length){if(ls>=67&&!hb)conditions.push({text:'All conditions met — wait for trigger',met:true});else conditions.push({text:'Monitor confluence for alignment',met:false});}
+  // v5: prefer weighted score thresholds. BR_ENGINE confirmation is now explicit.
+  const brOk=!!(state['BR_ENGINE']&&matchesTicker(state['BR_ENGINE']?.ticker)&&state['BR_ENGINE']?.bias!=='NEUTRAL');
+  const cvdOk=!!(state['CVD']&&matchesTicker(state['CVD']?.ticker)&&state['CVD']?.bias!=='NEUTRAL');
+  conditions.push({text:'B&R Engine must confirm direction (weight 30%)',met:brOk});
+  conditions.push({text:'CVD must align (weight 20%)',met:cvdOk&&dominant!=='NEUTRAL'&&((dominant==='LONG'&&state['CVD']?.bias==='BULL')||(dominant==='SHORT'&&state['CVD']?.bias==='BEAR'))});
+  if(dominant==='LONG'&&ls<60){const n=Math.max(1,Math.ceil((60-ls)/15));conditions.push({text:n+' more weighted point'+(n>1?'s':'')+' needed for GO (60 threshold)',met:false});}
+  if(dominant==='SHORT'&&ss<60){const n=Math.max(1,Math.ceil((60-ss)/15));conditions.push({text:n+' more weighted point'+(n>1?'s':'')+' needed for GO (60 threshold)',met:false});}
+  // v5: sweep_confirmed bonus condition (high-edge cluster)
+  const sweep=state['BR_ENGINE']&&state['BR_ENGINE'].sweep_confirmed===true;
+  if(sweep)conditions.push({text:'⚡ Sweep confirmed — historical 100% WR cluster',met:true});
+
+  if(!conditions.length){if(ls>=60&&!hb)conditions.push({text:'All conditions met — wait for trigger',met:true});else conditions.push({text:'Monitor confluence for alignment',met:false});}
 
   const met=conditions.filter(c=>c.met).length;
   document.getElementById('act-count').textContent=met+'/'+conditions.length+' MET';
@@ -1129,7 +1210,9 @@ async function triggerAnalysis(){
   const dominant=bull>bear?'LONG':bear>bull?'SHORT':'NEUTRAL';
   const ticker=(state._ticker||tickerFilter||'ES1!');
   const tfLabel=activeTF==='60'?'1H':activeTF+'M';
-  const ls=Math.round(bull*WEIGHT),ss=Math.round(bear*WEIGHT);
+  // v5: weighted scores from journal-derived weights
+  const wScore=computeWeightedScore(state);
+  const ls=wScore.longScore,ss=wScore.shortScore;
   const blockerList=INDS.filter(i=>state[i]&&state[i].blocker===true).map(i=>LABELS_MAP[i]);
   const ctxKey=JSON.stringify({bull,bear,hb,dominant,tf:activeTF,filter:tickerFilter});
   if(ctxKey===lastCtxKey)return;lastCtxKey=ctxKey;
@@ -1140,10 +1223,17 @@ async function triggerAnalysis(){
   if(aiDot)aiDot.className='ai-dot thinking';if(aiSt)aiSt.textContent='AI Analyst · Thinking';
   const sess=document.getElementById('session-display').textContent;
   const conflicts=INDS.filter(i=>state[i]&&matchesTicker(state[i]?.ticker)&&((dominant==='LONG'&&state[i].bias==='BEAR')||(dominant==='SHORT'&&state[i].bias==='BULL')));
-  const sys='You are a professional futures trading analyst inside the Prolific Confluence Engine. Give sharp, direct 2-sentence commentary. Senior trader voice: specific, no hedging, no disclaimers. Reference ticker and TF.';
-  const msg=`${ticker} ${tfLabel} — ${sess}: ${bull} BULL, ${bear} BEAR | Long:${ls}/100 Short:${ss}/100 | ${dominant} bias${hb?' | BLOCKERS: '+blockerList.join(', '):''}${conflicts.length?' | Conflicts: '+conflicts.map(i=>LABELS_MAP[i]).join(', '):''}\nState: ${INDS.map(i=>LABELS_MAP[i]+':'+(state[i]&&matchesTicker(state[i]?.ticker)?state[i].bias:'NO DATA')).join(' | ')}\nGive 2 sentences: what this confluence means now and what to watch next.`;
+  // v5: enriched context — trap %, chop, sweep, session quality, weighted state
+  const br=state['BR_ENGINE']||{};
+  const vps=state['VPS']||{};
+  const trapTxt=(vps.trap_long||vps.trap_short)?('Trap L:'+(vps.trap_long||'?')+'% S:'+(vps.trap_short||'?')+'%'):'Trap:?';
+  const chopTxt=vps.chop_score!=null?('CHOP '+vps.chop_score):'CHOP:?';
+  const sweepTxt=br.sweep_confirmed?'SWEEP CONFIRMED':'';
+  const sqTxt=currentSessionQuality()==='boost'?'High-WR hour':currentSessionQuality()==='chill'?'Low-WR hour':'';
+  const sys='You are a professional futures trading analyst inside the Prolific Confluence Engine V5. Give sharp, direct 2-sentence commentary. Senior trader voice: specific, no hedging, no disclaimers. Reference ticker, TF, and weighted score. The dashboard uses journal-derived weights: BR_ENGINE 30%, CVD 20%, VPS 20%, VAF 12%, PTEA 10%, MBA 8%.';
+  const msg=`${ticker} ${tfLabel} — ${sess}: ${bull} BULL, ${bear} BEAR | Long:${ls}/100 Short:${ss}/100 weighted | ${dominant} bias${hb?' | BLOCKERS: '+blockerList.join(', '):''}${conflicts.length?' | Conflicts: '+conflicts.map(i=>LABELS_MAP[i]).join(', '):''}${sweepTxt?' | '+sweepTxt:''}${sqTxt?' | '+sqTxt:''} | ${trapTxt} | ${chopTxt}\nState: ${INDS.map(i=>LABELS_MAP[i]+'('+(WEIGHTS[i]||16)+'%):'+(state[i]&&matchesTicker(state[i]?.ticker)?state[i].bias:'NO DATA')).join(' | ')}\nGive 2 sentences: what this confluence means now and what to watch next.`;
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:120,stream:true,system:sys,messages:[{role:'user',content:msg}]}),signal:aiAbort.signal});
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:120,stream:true,system:sys,messages:[{role:'user',content:msg}]}),signal:aiAbort.signal});
     if(!resp.ok)throw new Error('API '+resp.status);
     if(aiEl){aiEl.className='ai-text';aiEl.innerHTML='<span class="ai-cursor"></span>';}
     let text='';const reader=resp.body.getReader(),decoder=new TextDecoder();
@@ -1199,12 +1289,19 @@ function rebuildTradeLog(){
     const vpe=t.vpe_trap_pct!=null?Number(t.vpe_trap_pct):null;
     const cvdB=(t.cvd_bias||'').toUpperCase();
     const isPrime=vpe!==null&&vpe<50&&(cvdB==='BULL'||cvdB==='BEAR'||cvdB==='WEAK_BULL'||cvdB==='WEAK_BEAR');
+    // v5: PRIME_ELITE and SWEEP tier detection
+    const elite=isPrimeElite(t);
+    const sweep=isSweepConfirmed(t);
     const primeBadge=isPrime?'<span class="prime-badge">⚡ PRIME</span>':'';
+    const eliteBadge=elite?'<span class="elite-badge">★ PRIME ELITE</span>':'';
+    const sweepBadge=sweep?'<span class="sweep-badge">⚔ SWEEP</span>':'';
     const vpeTag=vpe!==null?'<span class="vpe-tag '+(vpe<50?'vpe-ok':'vpe-warn')+'">VPE '+vpe.toFixed(0)+'%</span>':'';
     const cvdTag=cvdB?'<span class="cvd-tag '+(cvdB.includes('BULL')?'cvd-bull':'cvd-bear')+'">'+cvdB.replace('_',' ')+'</span>':'';
+    // v5: tier line shows highest tier first (PRIME ELITE > SWEEP > PRIME)
+    const tierLine=(elite||sweep||isPrime)?'<div class="tc-elite">'+eliteBadge+sweepBadge+primeBadge+vpeTag+cvdTag+'</div>':'';
     el.innerHTML=
       '<div class="tc-hdr"><span class="tc-dir '+(t.direction||'').toLowerCase()+'">'+(t.direction||'—')+' · '+(t.level_type||t.ticker||'—')+'</span><div class="tc-meta"><span class="tc-sym">'+(t.ticker||'—')+src+'</span><span class="tc-ts">'+(t._ts||'—')+' ET</span></div></div>'+
-      (isPrime?'<div class="tc-prime">'+primeBadge+vpeTag+cvdTag+'</div>':'')+
+      tierLine+
       '<div class="tc-levels">'+lv('ENTRY',t.entry_price,false,'')+lv('TP1',t.tp1_price,t.hit_tp1,'hit-tp')+lv('TP2',t.tp2_price,t.hit_tp2,'hit-tp')+lv('TP3',t.tp3_price,t.hit_tp3,'hit-tp')+lv('STOP',t.stop_price,t.status==='closed-loss','hit-sl')+(t.exit_price&&t.status!=='open'?lv('EXIT',t.exit_price,true,t.status==='closed-win'?'hit-tp':'hit-sl'):'')+
       '</div><div class="tc-footer">'+sp+'<span class="status-tag '+stag+'">'+(t.status==='open'?'ACTIVE':t.status==='closed-win'?'WIN':'LOSS')+'</span></div>';
     pane.appendChild(el);
@@ -1220,96 +1317,9 @@ function playSound(type){
   if(type==='entry'){playTone(440,0.1,'sine',0.1);setTimeout(()=>playTone(550,0.12,'sine',0.08),100);}
   if(type==='tp'){playTone(660,0.08,'sine',0.09);setTimeout(()=>playTone(880,0.12,'sine',0.07),80);}
   if(type==='sl'){playTone(220,0.15,'sawtooth',0.07);setTimeout(()=>playTone(180,0.2,'sawtooth',0.05),150);}
-}
-
-// ══ GONG ══ Deep, attention-grabbing sound for trade alerts
-function playGong(){
-  initAudio();
-  if(!audioCtx)return;
-  try{
-    // Deep fundamental + overtones = gong character
-    const fundamentals=[65.41,110,146.83,220]; // C2, A2, D3, A3
-    fundamentals.forEach((freq,i)=>{
-      setTimeout(()=>{
-        const o=audioCtx.createOscillator(),g=audioCtx.createGain(),filt=audioCtx.createBiquadFilter();
-        o.type=i===0?'triangle':'sine';
-        o.frequency.value=freq;
-        filt.type='lowpass';
-        filt.frequency.value=1200;
-        filt.Q.value=1.5;
-        o.connect(filt);filt.connect(g);g.connect(audioCtx.destination);
-        const peakVol=i===0?0.35:i===1?0.22:i===2?0.15:0.08;
-        g.gain.setValueAtTime(0,audioCtx.currentTime);
-        g.gain.linearRampToValueAtTime(peakVol,audioCtx.currentTime+0.015);
-        g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+3.5);
-        o.start();
-        o.stop(audioCtx.currentTime+3.5);
-      },i*8); // Slight stagger creates shimmer
-    });
-    // Higher shimmer on top
-    setTimeout(()=>{
-      const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-      o.type='sine';o.frequency.value=440;
-      o.connect(g);g.connect(audioCtx.destination);
-      g.gain.setValueAtTime(0,audioCtx.currentTime);
-      g.gain.linearRampToValueAtTime(0.06,audioCtx.currentTime+0.02);
-      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+2.2);
-      o.start();
-      o.stop(audioCtx.currentTime+2.2);
-    },40);
-  }catch(e){}
-}
-
-// ══ TRADE ALERT OVERLAY ══
-let tradeAlertQueue=[];
-let tradeAlertActive=false;
-let ignoredSignalCount=0;
-
-function queueTradeAlert(trade){
-  tradeAlertQueue.push(trade);
-  if(!tradeAlertActive)showNextTradeAlert();
-}
-
-function showNextTradeAlert(){
-  if(!tradeAlertQueue.length){tradeAlertActive=false;return;}
-  tradeAlertActive=true;
-  const trade=tradeAlertQueue.shift();
-  const overlay=document.getElementById('trade-alert-overlay');
-  const isRearm=trade._event==='REARM_ENTRY';
-  const dir=(trade.direction||'').toLowerCase();
-  const title=document.getElementById('trade-alert-title');
-  title.textContent=(isRearm?'RE-ARM · ':'')+trade.direction;
-  title.className='trade-alert-title '+(isRearm?'rearm':dir==='long'?'long':'short');
-  document.getElementById('trade-alert-header').textContent=isRearm?'RE-ARM TRADE · NEW ENTRY':'NEW TRADE · ENTRY';
-  document.getElementById('trade-alert-sub').textContent=(trade.ticker||'—')+' · '+(trade.level_type||'—')+(trade.parent_trade_id?' · from '+trade.parent_trade_id.split('|').pop().slice(-6):'');
-  document.getElementById('ta-entry').textContent=fmtPrice(trade.entry_price);
-  document.getElementById('ta-sl').textContent=fmtPrice(trade.stop_price);
-  document.getElementById('ta-tp1').textContent=fmtPrice(trade.tp1_price);
-  document.getElementById('ta-tp2').textContent=fmtPrice(trade.tp2_price);
-  document.getElementById('ta-tp3').textContent=fmtPrice(trade.tp3_price);
-  document.getElementById('ta-score').textContent=trade.a_plus_score?Number(trade.a_plus_score).toFixed(1):'—';
-  document.getElementById('ta-ts').textContent=(trade._ts||'—')+' ET';
-  const qBadge=document.getElementById('trade-alert-queue');
-  if(tradeAlertQueue.length>0){qBadge.textContent='+'+tradeAlertQueue.length+' MORE';qBadge.classList.add('show');}
-  else{qBadge.classList.remove('show');}
-  overlay.classList.add('open');
-  playGong();
-  // Browser notification as backup if tab not focused
-  if(Notification&&Notification.permission==='granted'&&document.hidden){
-    new Notification('PROLIFIC · '+(isRearm?'RE-ARM ':'')+trade.direction,{body:(trade.ticker||'—')+' @ '+fmtPrice(trade.entry_price)+' · '+(trade.level_type||'')});
-  }
-}
-
-function dismissTradeAlert(){
-  const overlay=document.getElementById('trade-alert-overlay');
-  overlay.classList.remove('open');
-  setTimeout(showNextTradeAlert,250);
-}
-
-function fmtPrice(p){
-  if(p==null||p===''||isNaN(parseFloat(p)))return'—';
-  const n=parseFloat(p);
-  return n.toFixed(n>=1000?2:4);
+  // v5: differentiated entries — 4-tone ascending arpeggio for PRIME ELITE, 3-tone bright for SWEEP
+  if(type==='elite'){playTone(523,0.1,'triangle',0.12);setTimeout(()=>playTone(659,0.1,'triangle',0.12),90);setTimeout(()=>playTone(784,0.1,'triangle',0.12),180);setTimeout(()=>playTone(1047,0.18,'triangle',0.14),270);}
+  if(type==='sweep'){playTone(880,0.08,'square',0.1);setTimeout(()=>playTone(1175,0.1,'square',0.09),70);setTimeout(()=>playTone(1568,0.14,'square',0.08),160);}
 }
 
 // ══ DEMO ══
@@ -1323,13 +1333,6 @@ if(Notification&&Notification.permission==='default')Notification.requestPermiss
 function toggleWebhook(){document.getElementById('webhook-overlay').classList.toggle('open');}
 function closeOnOverlay(e){if(e.target===document.getElementById('webhook-overlay'))toggleWebhook();}
 document.addEventListener('keydown',e=>{
-  // Escape dismisses trade alert (priority over other hotkeys)
-  if(e.key==='Escape'){
-    const taOverlay=document.getElementById('trade-alert-overlay');
-    if(taOverlay&&taOverlay.classList.contains('open')){dismissTradeAlert();return;}
-    const whOverlay=document.getElementById('webhook-overlay');
-    if(whOverlay&&whOverlay.classList.contains('open')){toggleWebhook();return;}
-  }
   if(e.target.tagName==='INPUT')return;
   if(e.key==='1')setTF('1');if(e.key==='2')setTF('5');if(e.key==='3')setTF('15');if(e.key==='4')setTF('60');
   if(e.key==='c'||e.key==='C')clearSession();
